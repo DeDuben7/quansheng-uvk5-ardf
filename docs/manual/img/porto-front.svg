@@ -1,0 +1,197 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 310 645" width="310" height="645">
+  <title>Quansheng UV-K5, front view</title>
+  <!--
+    Hand-drawn flat illustration of the UV-K5 handheld (scout porto).
+    Same 310x645 coordinate system as the manual's callout overlay
+    (docs/manual/handleiding.html): keep the parts where the callouts point.
+    LCD glass: x 89-208, y 279-363 (left empty; the manual overlays a screenshot).
+    Render: render.ps1 (headless Edge + Pillow) -> 310x645 PNG.
+  -->
+  <defs>
+    <!-- very subtle side-to-side shade on the body -->
+    <linearGradient id="bodyShade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#172024"/>
+      <stop offset="0.45" stop-color="#10171a"/>
+      <stop offset="1" stop-color="#0c1214"/>
+    </linearGradient>
+    <!-- the two speaker slots, used to clip their diagonal ribs -->
+    <clipPath id="slotTop"><rect x="134" y="422" width="94" height="30" rx="15"/></clipPath>
+    <clipPath id="slotBottom"><rect x="134" y="462" width="94" height="30" rx="15"/></clipPath>
+    <!-- outline of the knob -->
+    <clipPath id="knobClip"><rect x="175" y="185" width="75" height="31" rx="5"/></clipPath>
+    <!-- the 12 keypad caps (fill comes from the <use>): columns x 89 130 171 212,
+         rows y 553 577 601, each 39 x 21 -->
+    <g id="keycaps">
+      <rect x="69.5" y="542.5" width="39" height="21" rx="6"/>
+      <rect x="110.5" y="542.5" width="39" height="21" rx="6"/>
+      <rect x="151.5" y="542.5" width="39" height="21" rx="6"/>
+      <rect x="192.5" y="542.5" width="39" height="21" rx="6"/>
+      <rect x="69.5" y="566.5" width="39" height="21" rx="6"/>
+      <rect x="110.5" y="566.5" width="39" height="21" rx="6"/>
+      <rect x="151.5" y="566.5" width="39" height="21" rx="6"/>
+      <rect x="192.5" y="566.5" width="39" height="21" rx="6"/>
+      <rect x="69.5" y="590.5" width="39" height="21" rx="6"/>
+      <rect x="110.5" y="590.5" width="39" height="21" rx="6"/>
+      <rect x="151.5" y="590.5" width="39" height="21" rx="6"/>
+      <rect x="192.5" y="590.5" width="39" height="21" rx="6"/>
+    </g>
+  </defs>
+
+  <!-- ===== Antenna: tapered rubber, base x 63-117 (hidden behind the body top), tip ~20 wide at y 5 -->
+  <g id="antenna">
+    <path d="M63,236 V74 C63,58 80,48 80,32 V15 A10,10 0 0 1 100,15 V32 C100,48 117,58 117,74 V236 Z"
+          fill="#161e22"/>
+    <!-- highlight down the left flank -->
+    <path d="M70,214 V78 C70,66 84,54 85,38 V17" fill="none" stroke="#2c3539" stroke-width="3"
+          stroke-linecap="round"/>
+    <!-- collar where it enters the radio -->
+    <rect x="59" y="212" width="62" height="16" rx="4" fill="#1a2327"/>
+  </g>
+
+  <!-- ===== Knob guard (bracket right of the knob), behind the knob and the body -->
+  <g id="guard">
+    <path d="M238,240 L249,198 Q251,190 258,190 H261 Q266,190 266,197 V238 Q266,248 256,250 Z"
+          fill="#10171a"/>
+    <path d="M263,197 V236" stroke="#2c3539" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- ===== Raised housing on the top between antenna and knob -->
+  <g id="top-housing" fill="#1a2327">
+    <rect x="122" y="216" width="70" height="12" rx="5"/>
+  </g>
+
+  <!-- ===== Volume / power knob: orange cylinder seen from the front -->
+  <g id="knob">
+    <!-- shaft collar on the top of the radio -->
+    <rect x="182" y="210" width="66" height="18" rx="3" fill="#1a2327"/>
+    <g clip-path="url(#knobClip)">
+      <rect x="175" y="185" width="75" height="31" fill="#e8730c"/>
+      <!-- flat cylinder shading: darker ends and bottom, lit top rim -->
+      <rect x="175" y="185" width="7" height="31" fill="#cf640a"/>
+      <rect x="243" y="185" width="7" height="31" fill="#cf640a"/>
+      <rect x="175" y="212" width="75" height="4" fill="#b4580a"/>
+      <rect x="175" y="185" width="75" height="4.5" fill="#f4a256"/>
+    </g>
+    <!-- grip notches, closer together towards the edges (cylinder) -->
+    <g fill="#a9520a">
+      <rect x="185" y="193" width="2" height="16" rx="1"/>
+      <rect x="196" y="193" width="2.6" height="16" rx="1.3"/>
+      <rect x="211" y="193" width="3" height="16" rx="1.5"/>
+      <rect x="227.4" y="193" width="2.6" height="16" rx="1.3"/>
+      <rect x="238" y="193" width="2" height="16" rx="1"/>
+    </g>
+  </g>
+
+  <!-- ===== Side parts sticking out of the body (drawn first, the body overlaps their inner half) -->
+  <g id="sides" fill="#1c2529">
+    <!-- PTT, left -->
+    <rect x="28" y="265" width="18" height="88" rx="6"/>
+    <!-- side key 1 and side key 2, left -->
+    <rect x="30" y="380" width="16" height="20" rx="4"/>
+    <rect x="30" y="405" width="16" height="20" rx="4"/>
+    <!-- rubber cover of the programming-cable jack, right -->
+    <rect x="250" y="270" width="15" height="82" rx="5"/>
+  </g>
+  <g id="side-highlights" stroke="#3a454b" stroke-width="1.6" stroke-linecap="round" fill="none">
+    <path d="M31.5,273 V345"/>
+    <path d="M33,384 V396"/>
+    <path d="M33,409 V421"/>
+    <path d="M262,278 V344"/>
+  </g>
+
+  <!-- ===== Body -->
+  <g id="body">
+    <path d="M64,224 H244 Q256,224 256,236 V492 C256,500 250,504 250,512 V608 Q250,632 226,632
+             H70 Q46,632 46,608 V492 C46,484 40,480 40,472 V258 C40,238 48,224 64,224 Z"
+          fill="url(#bodyShade)"/>
+    <!-- front face edge -->
+    <path d="M66,230 H240 Q250,230 250,240 V490 C250,497 244,501 244,508 V604 Q244,626 222,626
+             H74 Q52,626 52,604 V490 C52,484 46,480 46,474 V260 C46,243 52,230 66,230 Z"
+          fill="none" stroke="#1f292d" stroke-width="1.2"/>
+  </g>
+
+  <!-- ===== Flashlight LED (white "zaklamp") -->
+  <g id="led">
+    <rect x="80" y="231" width="17" height="5.5" rx="1.5" fill="#c3ccd2"/>
+    <rect x="82" y="232.3" width="9" height="1.6" rx="0.8" fill="#f4f7f9"/>
+  </g>
+
+  <!-- ===== Brand strip -->
+  <g id="brand">
+    <rect x="74" y="240" width="148" height="27" rx="5" fill="#080d0f" stroke="#2c3539" stroke-width="1"/>
+    <text x="150" y="258.5" text-anchor="middle" fill="#e6ecef"
+          font-family="'Segoe UI', Arial, Helvetica, sans-serif" font-size="14" font-weight="700"
+          letter-spacing="1.5">UV-K5</text>
+  </g>
+
+  <!-- ===== LCD: frame, black bezel, empty glass at exactly x 89-208, y 279-363 -->
+  <g id="lcd">
+    <rect x="78" y="271" width="141" height="102" rx="8" fill="#2c3539"/>
+    <rect x="82" y="274" width="133" height="96" rx="6" fill="#05090b"/>
+    <rect x="89" y="279" width="119" height="84" rx="2" fill="#dfe8ef"/>
+  </g>
+
+  <!-- ===== Speaker grille: panel with two slots of diagonal ribs -->
+  <g id="speaker">
+    <rect x="124" y="412" width="114" height="90" rx="16" fill="#161e22" stroke="#2c3539" stroke-width="1"/>
+    <rect x="134" y="422" width="94" height="30" rx="15" fill="#06090b"/>
+    <rect x="134" y="462" width="94" height="30" rx="15" fill="#06090b"/>
+    <g stroke="#2c3539" stroke-width="3.5" stroke-linecap="round">
+      <g clip-path="url(#slotTop)">
+        <path d="M128,456 L152,418 M140,456 L164,418 M152,456 L176,418 M164,456 L188,418
+                 M176,456 L200,418 M188,456 L212,418 M200,456 L224,418 M212,456 L236,418"/>
+      </g>
+      <g clip-path="url(#slotBottom)">
+        <path d="M128,496 L152,458 M140,496 L164,458 M152,496 L176,458 M164,496 L188,458
+                 M176,496 L200,458 M188,496 L212,458 M200,496 L224,458 M212,496 L236,458"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- ===== Keys -->
+  <g id="keys" font-family="'Segoe UI', Arial, Helvetica, sans-serif" fill="#ffffff" text-anchor="middle">
+    <!-- Every key: a #56636a copy 1 px higher under the cap gives it a lit top edge. -->
+
+    <!-- M (menu), centre (90, 401) -->
+    <rect x="64" y="385" width="52" height="30" rx="7" fill="#56636a"/>
+    <rect x="64" y="386" width="52" height="30" rx="7" fill="#3a454b"/>
+    <text x="90" y="407.5" font-size="18" font-weight="700">M</text>
+
+    <!-- up / down: one pill, two keys; chevrons at (77, 441) and (77, 489) -->
+    <rect x="58" y="424" width="38" height="80" rx="10" fill="#56636a"/>
+    <rect x="58" y="425" width="38" height="80" rx="10" fill="#3a454b"/>
+    <path d="M60,465 H94" stroke="#10171a" stroke-width="1.5"/>
+    <g fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M69,445 L77,437.5 L85,445"/>
+      <path d="M69,485 L77,492.5 L85,485"/>
+    </g>
+
+    <!-- EXIT, centre (89, 520) -->
+    <rect x="64" y="507" width="50" height="24" rx="7" fill="#56636a"/>
+    <rect x="64" y="508" width="50" height="24" rx="7" fill="#3a454b"/>
+    <text x="89" y="524" font-size="11" font-weight="700" letter-spacing="0.5">EXIT</text>
+
+    <!-- keypad well -->
+    <rect x="63" y="537" width="175" height="80" rx="10" fill="#0a1012"/>
+
+    <!-- keypad 3 x 4 (caps defined in <defs>) -->
+    <use href="#keycaps" fill="#56636a" transform="translate(0,-1)"/>
+    <use href="#keycaps" fill="#3a454b"/>
+    <g font-size="13" font-weight="600">
+      <text x="89" y="557.6">1</text>
+      <text x="130" y="557.6">2</text>
+      <text x="171" y="557.6">3</text>
+      <text x="89" y="581.6">4</text>
+      <text x="130" y="581.6">5</text>
+      <text x="171" y="581.6">6</text>
+      <text x="212" y="581.6">0</text>
+      <text x="89" y="605.6">7</text>
+      <text x="130" y="605.6">8</text>
+      <text x="171" y="605.6">9</text>
+      <text x="212" y="605.6">F</text>
+    </g>
+    <!-- "*" drawn as three strokes so it sits centred like the digits -->
+    <path d="M212,548.5 V557.5 M208.1,550.75 L215.9,555.25 M208.1,555.25 L215.9,550.75"
+          stroke="#ffffff" stroke-width="1.7" stroke-linecap="round"/>
+  </g>
+</svg>

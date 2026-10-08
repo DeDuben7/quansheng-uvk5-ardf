@@ -1,0 +1,62 @@
+quansheng-uvk5-ardf
+Copyright 2026 DeDuben7
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+It builds on, and bundles, the work of others. Their licences apply to
+their parts.
+
+
+Apache-2.0
+----------
+
+- Dual Tachyon: the original UV-K5 firmware. The BK4819, ST7565 and UI
+  helper drivers (core/Src/bk4819, core/Src/st7565, core/Src/ui) derive
+  from it, as do parts of the V1 platform layer: the DP32G030 register
+  headers (platform/uv-k5-v1-dp32g030/bsp/dp32g030/*.h) and the peripheral
+  drivers (platform/uv-k5-v1-dp32g030/Src/peripherals/*).
+- egzumer / reald: the ARDF fork of the UV-K5 firmware. The gain table and
+  the squelch handling derive from it.
+- armel: the UV-K1 / UV-K5 V3 (Puya PY32F071) port. Used as the reference
+  for the V3 platform layer.
+- Arm: CMSIS headers (platform/uv-k5-v1-dp32g030/external/CMSIS_5, and
+  cmsis_compiler.h, cmsis_gcc.h, core_cm0plus.h in
+  platform/uv-k5-v3-py32f071/bsp/py32f071/Include).
+
+
+MIT
+---
+
+- muzkr: the UV-K5 V3 bootloader flasher (platform/uv-k5-v3-py32f071/tools/
+  k5v3-flasher). It is vendored from muzkr's serialtool, which ships in
+  armel/uv-k1-k5v3-firmware-custom under tools/serialtool/, and it has been
+  modified by this project (split-packet fix in msg.fetch, bounded ACK wait
+  with resends, no page padding, verbose trace, BL-version prefix compare).
+  See platform/uv-k5-v3-py32f071/tools/k5v3-flasher/README.md. The MIT
+  copyright headers are preserved in each file; the licence text is in
+  platform/uv-k5-v3-py32f071/tools/k5v3-flasher/LICENSE. ScoutFlasher uses
+  this modified version for V3 radios.
+- Marco Paland: printf (core/external/printf and
+  platform/uv-k5-v1-dp32g030/external/printf).
+
+
+BSD-3-Clause
+------------
+
+- Puya Semiconductor / STMicroelectronics: the PY32F0xx device headers and
+  system files (platform/uv-k5-v3-py32f071/bsp). The CMSIS headers in the
+  same folder are Arm's, see Apache-2.0 above.
+
+
+Bundled binary programs
+-----------------------
+
+ScoutFlasher.exe contains two programs that are not part of this project's
+source code. Both are included unmodified.
+
+- K5TOOL v1.8.0.0 by qrp73, GPL-3.0. Used to flash UV-K5 V1 radios. It runs
+  as a separate program. Source code: https://github.com/qrp73/K5TOOL
+  (full licence text: tools/scout-flasher/bin/K5TOOL-LICENSE.txt).
+- Prolific PL2303 USB-serial driver 3.3.11.152, Microsoft-signed,
+  (c) Prolific Technology Inc. Included in ScoutFlasher.exe for
+  compatibility with older programming cables. It is not part of the source
+  tree.

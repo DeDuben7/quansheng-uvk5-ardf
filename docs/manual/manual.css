@@ -1,0 +1,147 @@
+/* Print stylesheet for the scout porto manual (A4, rendered by headless
+ * Edge in build.ps1). Screen view is a plain preview of the same pages. */
+
+:root {
+  --ink: #1d2529;
+  --muted: #5b676d;
+  --accent: #1f4e5f;      /* dark teal: headings, rules */
+  --knob: #e8730c;        /* the radio's orange knob: callouts */
+  --rule: #c9d3d6;
+  --soft: #eef3f4;
+  --lcd-glass: #cfd9c9;
+}
+
+@page {
+  size: A4;
+  margin: 16mm 17mm 18mm 17mm;
+}
+/* The page footer is in handleiding.html (it needs the version). */
+
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body {
+  margin: 0;
+  background: #fff;
+  color: var(--ink);
+  font: 11pt/1.45 "Segoe UI", Arial, sans-serif;
+}
+
+@media screen {
+  body { background: #e4e8ea; }
+  .page-flow { max-width: 176mm; margin: 0 auto; background: #fff; padding: 16mm 17mm; }
+}
+
+h1, h2, h3 { color: var(--accent); line-height: 1.2; font-weight: 600; }
+h2 {
+  font-size: 19pt;
+  margin: 0 0 4mm;
+  padding-bottom: 2mm;
+  border-bottom: 1.2pt solid var(--accent);
+  break-before: page;
+  break-after: avoid;
+}
+h2 .num { color: var(--knob); margin-right: 3mm; }
+h3 { font-size: 13pt; margin: 6mm 0 2mm; break-after: avoid; }
+p { margin: 0 0 3mm; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+li { margin-bottom: 1.2mm; }
+strong { font-weight: 600; }
+.lead { font-size: 12pt; }
+.muted { color: var(--muted); }
+.small { font-size: 9.5pt; }
+
+/* Keycaps: the radio's keys as they appear in the text. */
+.key {
+  display: inline-block;
+  min-width: 1.4em;
+  padding: 0 .45em;
+  border: 0.8pt solid #39464c;
+  border-bottom-width: 1.6pt;
+  border-radius: 4pt;
+  background: #f7f9f9;
+  font-size: 9.5pt;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; margin: 0 0 4mm; break-inside: avoid; }
+th, td { text-align: left; vertical-align: top; padding: 1.6mm 2.2mm; border-bottom: 0.6pt solid var(--rule); }
+th { font-weight: 600; color: var(--accent); border-bottom: 1pt solid var(--accent); }
+td:first-child { white-space: nowrap; }
+table.legend td:first-child { width: 8mm; }
+.n {
+  display: inline-block; width: 5.2mm; height: 5.2mm; border-radius: 50%;
+  background: var(--knob); color: #fff; font-size: 8.5pt; font-weight: 700;
+  line-height: 5.2mm; text-align: center;
+}
+
+/* LCD screenshots from the host emulator. */
+figure { margin: 0 0 4mm; break-inside: avoid; }
+figcaption { font-size: 9pt; color: var(--muted); margin-top: 1.2mm; }
+img.lcd {
+  display: block;
+  width: 62mm;
+  border-radius: 2.5mm;
+  border: 2.2mm solid #23292c;
+  box-shadow: 0 0 0 0.4pt #000;
+}
+img.lcd.small { width: 50mm; border-width: 1.8mm; }
+.screens { display: flex; flex-wrap: wrap; gap: 5mm 6mm; margin: 2mm 0 4mm; }
+.screens figure { margin: 0; }
+
+/* Side-by-side blocks */
+.two { display: flex; gap: 7mm; align-items: flex-start; }
+.two > .grow { flex: 1; min-width: 0; }
+
+.note {
+  background: var(--soft);
+  border-left: 3pt solid var(--accent);
+  padding: 2.5mm 3.5mm;
+  margin: 0 0 4mm;
+  break-inside: avoid;
+}
+.note.warn { border-left-color: var(--knob); background: #fdf2e8; }
+.note p:last-child { margin-bottom: 0; }
+
+ol.steps { counter-reset: step; list-style: none; padding-left: 0; }
+ol.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 9mm;
+  margin-bottom: 1.8mm;
+  break-inside: avoid;
+}
+ol.steps > li::before {
+  content: counter(step);
+  position: absolute; left: 0; top: 0.2mm;
+  width: 6mm; height: 6mm; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  font-size: 9.5pt; font-weight: 700; line-height: 6mm; text-align: center;
+}
+
+/* Cover */
+.cover { display: flex; flex-direction: column; align-items: center; text-align: center; height: 255mm; }
+.cover .kicker { margin-top: 6mm; font-size: 11pt; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.cover h1 { font-size: 34pt; margin: 3mm 0 1mm; }
+.cover .sub { font-size: 14pt; color: var(--muted); margin-bottom: 8mm; }
+.cover svg { height: 150mm; width: auto; }
+.cover .version {
+  margin-top: 8mm; display: inline-block; padding: 1.5mm 5mm; border-radius: 10mm;
+  background: var(--accent); color: #fff; font-size: 12pt; font-weight: 600;
+}
+.cover .org { margin-top: auto; font-size: 10pt; color: var(--muted); }
+
+/* Radio diagrams */
+.diagram svg { display: block; }
+.photo svg { height: 140mm; width: auto; }
+.callout circle { fill: var(--knob); stroke: #fff; stroke-width: 1.2; }
+.callout text { fill: #fff; font: 700 9.5px "Segoe UI", Arial, sans-serif; text-anchor: middle; dominant-baseline: central; }
+.callout line { stroke: var(--knob); stroke-width: 1.3; }
+.callout .dot { fill: var(--knob); stroke: none; }
+
+/* A web address in the text: may break anywhere, so it never runs off the page. */
+.link { display: inline-block; margin-top: 1mm; font: 600 9.5pt Consolas, "Courier New", monospace; color: var(--accent); overflow-wrap: anywhere; }
+/* Tables whose first column holds sentences, not short labels. */
+table.wrapfirst td:first-child { white-space: normal; }

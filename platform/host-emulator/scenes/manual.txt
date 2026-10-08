@@ -1,0 +1,19 @@
+# Screens for the manual (docs/manual). One scene per line: name: cmd; cmd
+# See Src/emu_script.c for the commands.
+welcome: wait 500; snap
+home: wait 2500; snap
+home_signal: wait 2500; rssi 150; sql open; wait 1200; snap
+home_df: wait 2500; press SIDE1; rssi 120; wait 1200; snap
+freq_entry: wait 2500; press 1; press 4; press 5; snap
+menu: wait 2500; press MENU; snap
+menu_squelch_edit: wait 2500; press MENU; press MENU; snap
+menu_squelch_off: wait 2500; press MENU; press MENU; press DOWN; press DOWN; press DOWN; snap
+menu_modulation: wait 2500; press MENU; press DOWN; press MENU; snap
+menu_band: wait 2500; press MENU; press DOWN; press DOWN; snap
+menu_band_70cm: wait 2500; press MENU; press DOWN; press DOWN; press MENU; press UP; press MENU; snap
+info: wait 2500; press MENU; press UP; press MENU; snap
+scanner: wait 2500; press MENU; press UP; press UP; press MENU; wait 300; snap
+scanner_results: signal 145287500 170; signal 144800000 120; signal 145500000 95; wait 2500; press MENU; press UP; press UP; press MENU; wait 4000; snap
+tx_pin: wait 2500; press F; snap
+tx_locked: wait 2500; press PTT; wait 200; snap
+info_squelch: wait 2500; rssi 75; press MENU; press UP; press MENU; press DOWN; wait 300; snap

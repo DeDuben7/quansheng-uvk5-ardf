@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scout porto – handleiding v{{VERSION}}</title>
+<link rel="stylesheet" href="manual.css">
+<style>
+  /* Page footer with the version (kept here so build.ps1 fills it in). */
+  @page {
+    @bottom-center {
+      content: "Scout porto \2013  handleiding v{{VERSION}}  \00b7  pagina " counter(page);
+      font: 8.5pt "Segoe UI", Arial, sans-serif;
+      color: #5b676d;
+    }
+  }
+  @page :first { @bottom-center { content: none; } }
+</style>
+</head>
+<body>
+<div class="page-flow">
+
+<!-- ================================================================ Cover -->
+<section class="cover">
+  <div class="kicker">Agger Martini Groep</div>
+  <h1>Scout porto</h1>
+  <div class="sub">Handleiding voor de Quansheng UV-K5 met AMG scout-software</div>
+  <svg viewBox="0 0 310 645" role="img" aria-label="De scout porto">
+    <image href="img/porto-front.png" width="310" height="645"/>
+    <rect x="89" y="279" width="119" height="84" fill="#cfd9c9"/>
+    <image href="img/screens/home.png" x="89" y="279" width="119" height="84" preserveAspectRatio="xMidYMid meet"/>
+  </svg>
+  <div class="version">Software versie {{VERSION}} · {{COMMIT}}</div>
+  <div class="org">Voor de beheerder en de gebruikers van de porto’s · versie 1 en versie 3 werken hetzelfde</div>
+</section>
+
+<!-- ======================================================= 1 Overzicht -->
+<h2><span class="num">1</span>Overzicht</h2>
+<p class="lead">De scout porto is een eenvoudige ontvanger voor de 2&nbsp;m- en 70&nbsp;cm-band, gemaakt voor vossenjacht en luisteren. Er zijn twee uitvoeringen (versie&nbsp;1 en versie&nbsp;3); ze worden precies hetzelfde bediend.</p>
+
+<div class="two">
+  <div class="photo diagram">
+    <svg viewBox="0 0 310 645" role="img" aria-label="Voorkant van de porto met genummerde toetsen">
+      <image href="img/porto-front.png" width="310" height="645"/>
+      <rect x="89" y="279" width="119" height="84" fill="#cfd9c9"/>
+      <image href="img/screens/home.png" x="89" y="279" width="119" height="84" preserveAspectRatio="xMidYMid meet"/>
+      <g class="callout">
+        <!-- n: circle (cx,cy) -> target -->
+        <line x1="30" y1="95" x2="78" y2="95"/><circle class="dot" cx="78" cy="95" r="2"/><circle cx="30" cy="95" r="9"/><text x="30" y="95">1</text>
+        <line x1="285" y1="160" x2="243" y2="190"/><circle class="dot" cx="243" cy="190" r="2"/><circle cx="285" cy="160" r="9"/><text x="285" y="160">2</text>
+        <line x1="30" y1="225" x2="86" y2="233"/><circle class="dot" cx="86" cy="233" r="2"/><circle cx="30" cy="225" r="9"/><text x="30" y="225">3</text>
+        <line x1="288" y1="262" x2="206" y2="303"/><circle class="dot" cx="206" cy="303" r="2"/><circle cx="288" cy="262" r="9"/><text x="288" y="262">4</text>
+        <line x1="12" y1="300" x2="35" y2="305"/><circle class="dot" cx="35" cy="305" r="2"/><circle cx="12" cy="300" r="9"/><text x="12" y="300">5</text>
+        <line x1="12" y1="378" x2="36" y2="388"/><circle class="dot" cx="36" cy="388" r="2"/><circle cx="12" cy="378" r="9"/><text x="12" y="378">6</text>
+        <line x1="12" y1="414" x2="36" y2="414"/><circle class="dot" cx="36" cy="414" r="2"/><circle cx="12" cy="414" r="9"/><text x="12" y="414">7</text>
+        <line x1="150" y1="395" x2="112" y2="401"/><circle class="dot" cx="112" cy="401" r="2"/><circle cx="150" cy="395" r="9"/><text x="150" y="395">8</text>
+        <line x1="150" y1="436" x2="88" y2="441"/><circle class="dot" cx="88" cy="441" r="2"/><circle cx="150" cy="436" r="9"/><text x="150" y="436">9</text>
+        <line x1="150" y1="486" x2="88" y2="489"/><circle class="dot" cx="88" cy="489" r="2"/><circle cx="150" cy="486" r="9"/><text x="150" y="486">10</text>
+        <line x1="150" y1="522" x2="110" y2="520"/><circle class="dot" cx="110" cy="520" r="2"/><circle cx="150" cy="522" r="9"/><text x="150" y="522">11</text>
+        <line x1="288" y1="580" x2="226" y2="578"/><circle class="dot" cx="226" cy="578" r="2"/><circle cx="288" cy="580" r="9"/><text x="288" y="580">12</text>
+        <line x1="288" y1="545" x2="228" y2="553"/><circle class="dot" cx="228" cy="553" r="2"/><circle cx="288" cy="545" r="9"/><text x="288" y="545">13</text>
+        <line x1="288" y1="616" x2="228" y2="602"/><circle class="dot" cx="228" cy="602" r="2"/><circle cx="288" cy="616" r="9"/><text x="288" y="616">14</text>
+        <line x1="288" y1="330" x2="258" y2="335"/><circle class="dot" cx="258" cy="335" r="2"/><circle cx="288" cy="330" r="9"/><text x="288" y="330">15</text>
+      </g>
+    </svg>
+  </div>
+  <div class="grow">
+    <table class="legend">
+      <tr><td><span class="n">1</span></td><td><strong>Antenne</strong></td></tr>
+      <tr><td><span class="n">2</span></td><td><strong>Aan/uit en volume</strong> – rechtsom tot de klik: aan. Verder draaien: harder.</td></tr>
+      <tr><td><span class="n">3</span></td><td><strong>Zaklamp-LED</strong> – brandt wit als de porto klaar staat om bijgewerkt te worden (hoofdstuk&nbsp;8).</td></tr>
+      <tr><td><span class="n">4</span></td><td><strong>Scherm</strong></td></tr>
+      <tr><td><span class="n">5</span></td><td><strong>PTT</strong> (zijkant links, groot; tekening in hoofdstuk&nbsp;4) – zenden; vergrendeld (hoofdstuk&nbsp;7).</td></tr>
+      <tr><td><span class="n">6</span></td><td><strong>Zijtoets&nbsp;1</strong> (onder de PTT) – peiltoon aan/uit.</td></tr>
+      <tr><td><span class="n">7</span></td><td><strong>Zijtoets&nbsp;2</strong> (onderste) – geen functie.</td></tr>
+      <tr><td><span class="n">8</span></td><td><strong>MENU</strong> (M) – het menu.</td></tr>
+      <tr><td><span class="n">9</span></td><td><strong>Omhoog</strong> ▲ – versterking hoger; in het menu: omhoog.</td></tr>
+      <tr><td><span class="n">10</span></td><td><strong>Omlaag</strong> ▼ – versterking lager; in het menu: omlaag.</td></tr>
+      <tr><td><span class="n">11</span></td><td><strong>EXIT</strong> – wissen, annuleren, terug.</td></tr>
+      <tr><td><span class="n">12</span></td><td><strong>Cijfers 0–9</strong> – frequentie intikken.</td></tr>
+      <tr><td><span class="n">13</span></td><td><strong>*</strong> (sterretje) – in de scanner: opnieuw zoeken.</td></tr>
+      <tr><td><span class="n">14</span></td><td><strong>F</strong> – pincode voor zenden.</td></tr>
+      <tr><td><span class="n">15</span></td><td><strong>Aansluiting programmeerkabel</strong> (zijkant rechts, onder het rubber klepje).</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ======================================================== 2 Aanzetten -->
+<h2><span class="num">2</span>Aanzetten en uitzetten</h2>
+<div class="two">
+  <div class="grow">
+    <ol class="steps">
+      <li>Draai de knop bovenop <strong>rechtsom</strong> tot hij klikt.</li>
+      <li>Het welkomstscherm verschijnt. Onderaan staat de <strong>softwareversie</strong> (hier v{{VERSION}}).</li>
+      <li>Na ongeveer twee seconden verschijnt het hoofdscherm. De porto ontvangt nu.</li>
+      <li>Met dezelfde knop regelt u het volume. Uitzetten: linksom draaien tot de klik.</li>
+    </ol>
+  </div>
+  <figure>
+    <img class="lcd small" src="img/screens/welcome.png" alt="Welkomstscherm">
+    <figcaption>Welkomstscherm met de softwareversie</figcaption>
+  </figure>
+</div>
+
+<h3>Na elke start</h3>
+<p>De porto onthoudt niets. Bij elke start staat hij op:</p>
+<table>
+  <tr><th>Instelling</th><th>Waarde bij aanzetten</th></tr>
+  <tr><td>Frequentie</td><td><strong>144.450 MHz</strong> (2&nbsp;m-band)</td></tr>
+  <tr><td>Modulatie</td><td>FM</td></tr>
+  <tr><td>Squelch</td><td>3</td></tr>
+  <tr><td>Versterking</td><td>7 (van 0 tot 16)</td></tr>
+  <tr><td>Peiltoon</td><td>uit</td></tr>
+  <tr><td>Zenden</td><td>vergrendeld</td></tr>
+</table>
+
+<!-- ====================================================== 3 Het scherm -->
+<h2><span class="num">3</span>Het scherm</h2>
+<div class="two">
+  <figure>
+    <img class="lcd" src="img/screens/home.png" alt="Hoofdscherm">
+    <figcaption>Hoofdscherm, geen signaal</figcaption>
+  </figure>
+  <figure>
+    <img class="lcd" src="img/screens/home_signal.png" alt="Hoofdscherm met signaal">
+    <figcaption>Een signaal: RSSI en balk lopen op</figcaption>
+  </figure>
+</div>
+<table>
+  <tr><th>Regel</th><th>Betekenis</th></tr>
+  <tr><td>AMG SCOUT &nbsp;74%</td><td>Naam en <strong>batterij</strong> in procenten. Staat er AMG SCOUT TX, dan is zenden ontgrendeld.</td></tr>
+  <tr><td>144.4500</td><td>De <strong>frequentie</strong> in MHz.</td></tr>
+  <tr><td>FM</td><td>Modulatie: FM (normaal) of AM.</td></tr>
+  <tr><td>N</td><td>Smalle bandbreedte (12,5 kHz).</td></tr>
+  <tr><td>G:07</td><td><strong>Versterking</strong> van 00 (minst gevoelig) tot 16 (meest gevoelig). Wijzigen met ▲ en ▼.</td></tr>
+  <tr><td>SQ3</td><td><strong>Squelch</strong>-stand 0–9. SQ0 betekent: squelch uit.</td></tr>
+  <tr><td>- &nbsp;of&nbsp; T</td><td>Peiltoon uit (-) of aan (T).</td></tr>
+  <tr><td>RSSI 60 &nbsp;avg 60</td><td><strong>Signaalsterkte</strong>: het getal van nu en het gemiddelde. Zonder signaal staat er een laag getal (ruis); hoe hoger, hoe sterker.</td></tr>
+  <tr><td>Balk</td><td>De signaalsterkte als balk. Het losse streepje is de hoogste waarde van de laatste twee seconden.</td></tr>
+</table>
+
+<!-- ======================================================== 4 Bediening -->
+<h2><span class="num">4</span>Bediening</h2>
+<p>Op het hoofdscherm doen de toetsen het volgende:</p>
+<table>
+  <tr><th>Toets</th><th>Wat gebeurt er</th></tr>
+  <tr><td><span class="key">0</span>–<span class="key">9</span></td><td>Frequentie intikken (zie hieronder).</td></tr>
+  <tr><td><span class="key">EXIT</span></td><td>Een half ingetikte frequentie wissen.</td></tr>
+  <tr><td><span class="key">▲</span> <span class="key">▼</span></td><td>Versterking hoger of lager (G:00 – G:16).</td></tr>
+  <tr><td><span class="key">Zijtoets 1</span></td><td>Peiltoon aan of uit (hoofdstuk&nbsp;6).</td></tr>
+  <tr><td><span class="key">M</span></td><td>Het menu openen (hoofdstuk&nbsp;5).</td></tr>
+  <tr><td><span class="key">F</span></td><td>Pincode voor zenden (hoofdstuk&nbsp;7).</td></tr>
+  <tr><td><span class="key">Zijtoets 2</span></td><td>Geen functie.</td></tr>
+</table>
+
+<h3>Een frequentie intikken</h3>
+<div class="two">
+  <div class="grow">
+    <p>Tik <strong>zes cijfers</strong>: de drie cijfers vóór de punt en drie erachter. Na het zesde cijfer springt de porto meteen naar die frequentie.</p>
+    <table>
+      <tr><th>Gewenst</th><th>Intikken</th></tr>
+      <tr><td>144.450 MHz</td><td><span class="key">1</span><span class="key">4</span><span class="key">4</span><span class="key">4</span><span class="key">5</span><span class="key">0</span></td></tr>
+      <tr><td>145.500 MHz</td><td><span class="key">1</span><span class="key">4</span><span class="key">5</span><span class="key">5</span><span class="key">0</span><span class="key">0</span></td></tr>
+      <tr><td>433.500 MHz</td><td><span class="key">4</span><span class="key">3</span><span class="key">3</span><span class="key">5</span><span class="key">0</span><span class="key">0</span></td></tr>
+    </table>
+    <p>Vergist? Druk <span class="key">EXIT</span> en begin opnieuw.</p>
+  </div>
+  <figure>
+    <img class="lcd small" src="img/screens/freq_entry.png" alt="Frequentie intikken">
+    <figcaption>Na 1, 4, 5: de streepjes wachten op de rest</figcaption>
+  </figure>
+</div>
+
+<h3>De zijtoetsen</h3>
+<div class="two">
+  <div class="diagram">
+    <svg viewBox="0 0 260 230" width="58mm" role="img" aria-label="Linkerzijkant met PTT en zijtoetsen">
+      <!-- left side of the radio, antenna up -->
+      <rect x="40" y="8" width="16" height="44" rx="6" fill="#2b3134"/>
+      <rect x="22" y="48" width="52" height="176" rx="14" fill="#2f363a"/>
+      <rect x="27" y="56" width="42" height="160" rx="10" fill="#3b4347"/>
+      <rect x="34" y="78" width="28" height="64" rx="8" fill="#20262a" stroke="#6b767c" stroke-width="1.5"/>
+      <rect x="37" y="152" width="22" height="18" rx="4" fill="#20262a" stroke="#6b767c" stroke-width="1.5"/>
+      <rect x="37" y="176" width="22" height="18" rx="4" fill="#20262a" stroke="#6b767c" stroke-width="1.5"/>
+      <g class="callout">
+        <line x1="62" y1="110" x2="120" y2="110"/><circle cx="128" cy="110" r="9"/><text x="128" y="110">5</text>
+        <line x1="59" y1="161" x2="120" y2="150"/><circle cx="128" cy="150" r="9"/><text x="128" y="150">6</text>
+        <line x1="59" y1="185" x2="120" y2="190"/><circle cx="128" cy="190" r="9"/><text x="128" y="190">7</text>
+      </g>
+      <text x="144" y="114" font-size="12" fill="#1d2529" font-family="Segoe UI, Arial">PTT</text>
+      <text x="144" y="154" font-size="12" fill="#1d2529" font-family="Segoe UI, Arial">Zijtoets 1</text>
+      <text x="144" y="194" font-size="12" fill="#1d2529" font-family="Segoe UI, Arial">Zijtoets 2</text>
+    </svg>
+  </div>
+  <div class="grow">
+    <p>De PTT en de twee zijtoetsen zitten aan de <strong>linkerkant</strong> (als u naar het scherm kijkt). Direct onder de grote PTT zit zijtoets&nbsp;1, daaronder zijtoets&nbsp;2.</p>
+    <p class="muted small">Op de tekening van de voorkant (hoofdstuk&nbsp;1) zijn ze alleen als randje te zien; de tekening hiernaast laat de zijkant zien.</p>
+  </div>
+</div>
+
+<!-- =========================================================== 5 Menu -->
+<h2><span class="num">5</span>Het menu</h2>
+<div class="two">
+  <div class="grow">
+    <p>Druk kort op <span class="key">M</span>. Het menu heeft vijf onderdelen. Het gekozen onderdeel is zwart.</p>
+    <table>
+      <tr><th>Toets</th><th>In het menu</th></tr>
+      <tr><td><span class="key">▲</span> <span class="key">▼</span></td><td>Onderdeel kiezen.</td></tr>
+      <tr><td><span class="key">M</span></td><td>Waarde wijzigen, of Scanner / Info openen.</td></tr>
+      <tr><td><span class="key">EXIT</span></td><td>Terug naar het hoofdscherm.</td></tr>
+    </table>
+  </div>
+  <figure>
+    <img class="lcd" src="img/screens/menu.png" alt="Het menu">
+    <figcaption>Het menu; rechtsboven de softwareversie</figcaption>
+  </figure>
+</div>
+
+<div class="two">
+  <div class="grow">
+    <h3>Een waarde wijzigen</h3>
+    <ol class="steps">
+      <li>Kies het onderdeel met <span class="key">▲</span> <span class="key">▼</span> en druk <span class="key">M</span>. Alleen de waarde is nu zwart.</li>
+      <li>Verander de waarde met <span class="key">▲</span> <span class="key">▼</span>. De porto past hem <strong>meteen</strong> toe, zodat u het verschil hoort.</li>
+      <li>Druk <span class="key">M</span> om te bewaren, of <span class="key">EXIT</span> om de oude waarde terug te zetten.</li>
+    </ol>
+  </div>
+  <figure>
+    <img class="lcd small" src="img/screens/menu_squelch_edit.png" alt="Squelch wijzigen">
+    <figcaption>Squelch wordt gewijzigd</figcaption>
+  </figure>
+</div>
+<p class="muted small">Bewaren geldt tot de porto uit gaat: na aanzetten staat alles weer zoals in hoofdstuk&nbsp;2.</p>
+
+<h3>Squelch</h3>
+<div class="two">
+  <div class="grow">
+    <p>De squelch houdt de luidspreker stil als er geen signaal is, zodat u geen ruis hoort. Komt er een signaal binnen, dan gaat het geluid vanzelf aan.</p>
+    <ul>
+      <li><strong>uit</strong> (0): altijd geluid, ook ruis. Handig bij vossenjacht.</li>
+      <li><strong>1</strong>: opent al bij zwakke signalen.</li>
+      <li><strong>9</strong>: opent alleen bij sterke signalen.</li>
+      <li>Standaard: <strong>3</strong>.</li>
+    </ul>
+    <p>Hoort u een zwakke zender niet? Zet de squelch lager. Gaat het geluid steeds aan en uit door ruis? Zet hem hoger.</p>
+  </div>
+  <figure>
+    <img class="lcd small" src="img/screens/menu_squelch_off.png" alt="Squelch uit">
+    <figcaption>Squelch op ‘uit’</figcaption>
+  </figure>
+</div>
+
+<h3>Modulatie</h3>
+<p><strong>FM</strong> is de normale stand voor de 2&nbsp;m- en 70&nbsp;cm-band. <strong>AM</strong> is alleen nodig voor AM-zenders. Wisselen met <span class="key">▲</span> of <span class="key">▼</span>.</p>
+
+<h3>Band</h3>
+<div class="two">
+  <div class="grow">
+    <p>Wisselt tussen de <strong>2&nbsp;m</strong>- en de <strong>70&nbsp;cm</strong>-band. Elke band onthoudt zijn laatste frequentie zolang de porto aan staat. De eerste keer 70&nbsp;cm begint op 433.500 MHz.</p>
+  </div>
+  <figure>
+    <img class="lcd small" src="img/screens/menu_band_70cm.png" alt="Band 70 cm">
+    <figcaption>Band op 70 cm</figcaption>
+  </figure>
+</div>
+
+<h3>Scanner</h3>
+<p>De scanner zoekt in de huidige band naar de vijf sterkste signalen: 144,0 – 146,0 MHz op 2&nbsp;m, 433,0 – 435,0 MHz op 70&nbsp;cm. Zoeken duurt een paar seconden.</p>
+<div class="screens">
+  <figure><img class="lcd small" src="img/screens/scanner.png" alt="Scanner zoekt"><figcaption>Zoeken…</figcaption></figure>
+  <figure><img class="lcd small" src="img/screens/scanner_results.png" alt="Scanner resultaten"><figcaption>De vijf sterkste, sterkste bovenaan</figcaption></figure>
+</div>
+<table>
+  <tr><th>Toets</th><th>In de scanner</th></tr>
+  <tr><td><span class="key">1</span>–<span class="key">5</span></td><td>Naar die frequentie gaan (terug naar het hoofdscherm).</td></tr>
+  <tr><td><span class="key">*</span></td><td>Opnieuw zoeken.</td></tr>
+  <tr><td><span class="key">▲</span> <span class="key">▼</span></td><td>Versterking. Staat er <em>SAT! LOWER GAIN</em>, dan is de versterking te hoog: druk ▼ en dan <span class="key">*</span>.</td></tr>
+  <tr><td><span class="key">EXIT</span></td><td>Terug naar het hoofdscherm, op de oude frequentie.</td></tr>
+</table>
+
+<h3>Info</h3>
+<p>Technische gegevens voor de beheerder, op twee pagina’s. <span class="key">▲</span> of <span class="key">▼</span> wisselt van pagina, <span class="key">M</span> start een versterkingsmeting en <span class="key">EXIT</span> gaat terug naar het menu (zie hoofdstuk&nbsp;10).</p>
+<div class="screens">
+  <figure><img class="lcd small" src="img/screens/info.png" alt="Info, fabriekskalibratie"><figcaption>Pagina 1: versie, batterij, fabriekskalibratie</figcaption></figure>
+  <figure><img class="lcd small" src="img/screens/info_squelch.png" alt="Info, squelch"><figcaption>Pagina 2: de squelch, live</figcaption></figure>
+</div>
+
+<!-- ===================================================== 6 Vossenjacht -->
+<h2><span class="num">6</span>Vossenjacht</h2>
+<p class="lead">Met de peiltoon hoort u hoe sterk de vos binnenkomt: hoe hoger de toon, hoe sterker het signaal.</p>
+<ol class="steps">
+  <li>Tik de frequentie van de vos in (bijvoorbeeld <span class="key">1</span><span class="key">4</span><span class="key">4</span><span class="key">4</span><span class="key">5</span><span class="key">0</span>).</li>
+  <li>Zet de squelch op <strong>uit</strong> (menu → Squelch → ▼ tot ‘uit’ → M), dan mist u geen zwakke signalen.</li>
+  <li>Druk <span class="key">Zijtoets 1</span>: de peiltoon gaat aan, op het scherm staat een <strong>T</strong>.</li>
+  <li>Draai langzaam rond met de porto. Waar de toon het hoogst is, ligt de vos.</li>
+  <li>Dichtbij wordt het signaal te sterk: de balk staat vol en de toon verandert niet meer. Druk dan <span class="key">▼</span> tot de balk weer ruimte heeft, en zoek verder.</li>
+  <li>Nogmaals <span class="key">Zijtoets 1</span> zet de peiltoon uit; u hoort dan weer het gewone geluid.</li>
+</ol>
+<div class="two">
+  <figure>
+    <img class="lcd" src="img/screens/home_df.png" alt="Peiltoon aan">
+    <figcaption>Peiltoon aan: T achteraan de tweede regel</figcaption>
+  </figure>
+  <div class="grow">
+    <div class="note">
+      <p>De peiltoon werkt ook als de squelch aan staat: hij reageert op de signaalsterkte, niet op het geluid.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================== 7 Zenden -->
+<h2><span class="num">7</span>Zenden</h2>
+<p>De porto is in de eerste plaats een ontvanger. <strong>Zenden is vergrendeld.</strong> Drukt u op de PTT, dan verschijnt <em>TX LOCKED: F+PIN</em> en gebeurt er verder niets.</p>
+<div class="screens">
+  <figure><img class="lcd small" src="img/screens/tx_locked.png" alt="Zenden vergrendeld"><figcaption>PTT ingedrukt terwijl zenden vergrendeld is</figcaption></figure>
+  <figure><img class="lcd small" src="img/screens/tx_pin.png" alt="Pincode invoeren"><figcaption>Na F: pincode invoeren</figcaption></figure>
+</div>
+<p>Zenden is alleen bedoeld voor een <strong>zendamateur</strong> om te testen. Het werkt zo:</p>
+<ul>
+  <li>Druk <span class="key">F</span> en tik de pincode van vier cijfers. Bij de goede code verschijnt <em>TX UNLOCKED</em> en bovenin <em>AMG SCOUT TX</em>. <span class="key">EXIT</span> breekt het intikken af.</li>
+  <li>Houd de PTT ingedrukt om te zenden, met zeer laag vermogen. Na 60 seconden stopt de porto vanzelf (<em>TX TIMEOUT</em>).</li>
+  <li>Zenden kan alleen op 144–146 MHz en 430–440 MHz, en alleen vanaf het hoofdscherm.</li>
+  <li>Nogmaals <span class="key">F</span> vergrendelt weer (<em>TX LOCKED</em>). Uitzetten vergrendelt ook.</li>
+</ul>
+<p class="muted small">De pincode staat bewust niet in deze handleiding.</p>
+
+<!-- ============================================ 8 Software bijwerken -->
+<h2><span class="num">8</span>Software bijwerken <span class="muted" style="font-size:12pt;font-weight:400">– voor de beheerder</span></h2>
+<p class="lead">Nieuwe software zet u met één programma op de porto: <strong>ScoutFlasher.exe</strong>. Er hoeft niets anders geïnstalleerd te worden. Het programma haalt zelf altijd de nieuwste software van internet.</p>
+
+<p><strong>Nodig:</strong> een computer met Windows&nbsp;11 <strong>en een verbinding met internet</strong>, de programmeerkabel (USB aan de ene kant, de dubbele stekker voor de porto aan de andere) en het bestand ScoutFlasher.exe.</p>
+
+<div class="note">
+  <p><strong>Waar haalt u het programma?</strong> Op deze vaste internetpagina, die altijd het nieuwste programma geeft:<br>
+  <span class="link">https://github.com/DeDuben7/quansheng-uvk5-ardf/releases/latest/download/ScoutFlasher.exe</span></p>
+  <p><strong>Waarschuwt Edge bij het downloaden?</strong> Edge kan zeggen dat het bestand niet vaak wordt gedownload. Klik op de drie puntjes <strong>…</strong> (<em>Meer acties</em>), dan op <strong>Behouden</strong> en dan op <strong>Toch behouden</strong>.</p>
+  <p><strong>Internet is nodig.</strong> Zonder internet haalt het programma de software niet op en werkt het de porto niet bij. Daardoor kan een porto nooit per ongeluk een oudere versie krijgen.</p>
+</div>
+
+<div class="note warn">
+  <p><strong>Gooi oudere exemplaren weg.</strong> Heeft u het programma al eerder gedownload, bijvoorbeeld <em>ScoutFlasher-1.0.exe</em>? Gooi die weg zodra u het nieuwe programma hebt. Een oud exemplaar kan nog oudere software op een porto zetten. In de vorige handleiding stond dat u oude programma’s moest bewaren. Dat hoeft niet meer.</p>
+</div>
+
+<h3>Stap voor stap</h3>
+<ol class="steps">
+  <li><strong>Dubbelklik</strong> op ScoutFlasher.exe.<br>
+      Ziet u <em>Windows heeft uw pc beveiligd</em>? Klik op <strong>Meer info</strong> en dan op <strong>Toch uitvoeren</strong>. Dat komt omdat het programma zelfgemaakt is en geen certificaat heeft.</li>
+  <li>Het programma haalt eerst de nieuwste software op (<em>Nieuwste software ophalen…</em>). Even wachten. Dan staat er bijvoorbeeld <em>Software versie {{VERSION}} (nieuwste, …) is klaar om op uw porto te zetten.</em> Klik op <strong>Start</strong>.<br>
+      Staat er iets anders? Zie de tabel hieronder.</li>
+  <li>Steek de kabel in de <strong>computer</strong>. Het programma zoekt de kabel zelf.<br>
+      Moet het stuurprogramma van de kabel worden hersteld, dan zegt het programma dat. Klik op <strong>Herstellen</strong>. Windows vraagt dan <em>Wilt u toestaan dat deze app wijzigingen aanbrengt?</em> Klik op <strong>Ja</strong>. Soms vraagt het programma de kabel even los te halen en weer in te steken.</li>
+  <li>Zet de porto <strong>uit</strong> en steek de kabel in de porto (zijkant rechts, onder het klepje).</li>
+  <li>Houd de <strong>PTT ingedrukt</strong> en zet de porto <strong>aan</strong>. Laat de PTT los als de <strong>zaklamp-LED</strong> bovenop wit brandt. Het scherm blijft leeg; dat is goed.</li>
+  <li>Het programma ziet de porto en meldt <em>Porto gevonden: versie 1 (oud type)</em> of <em>Porto gevonden: versie 3</em>. Klik op <strong>Start bijwerken</strong>.</li>
+  <li>Wacht tot de balk vol is (tien seconden tot een halve minuut). <strong>Haal de kabel er niet uit.</strong></li>
+  <li>Klaar: haal de kabel uit de porto, zet hem uit en weer aan. Op het welkomstscherm staat nu <strong>v{{VERSION}}</strong>.</li>
+  <li>Tweede porto? Klik op <strong>Nog een porto</strong> en begin bij stap&nbsp;4.</li>
+</ol>
+
+<h3>Wat er op het eerste scherm kan staan</h3>
+<table class="wrapfirst">
+  <tr><th style="width:46%">Het programma zegt</th><th>Wat u doet</th></tr>
+  <tr><td>Software versie … is klaar om op uw porto te zetten.</td><td>Klik op <strong>Start</strong>.</td></tr>
+  <tr><td>Er is een nieuwe versie van dit programma.</td><td>Klik op <strong>Downloaden</strong>. Uw browser zet het nieuwe programma in de map Downloads. <strong>Sluit dit programma</strong> en start daarna het nieuwe programma.</td></tr>
+  <tr><td>Deze versie van het programma is te oud voor de nieuwste software.</td><td>Klik op <strong>Nieuwe versie downloaden</strong>. <strong>Sluit dit programma</strong> en start daarna het nieuwe programma.</td></tr>
+  <tr><td>Geen verbinding met internet. Verbind de computer met internet en klik op Opnieuw.</td><td>Verbind de computer met internet en klik op <strong>Opnieuw</strong>.</td></tr>
+  <tr><td>De software kon niet goed worden opgehaald.</td><td>Klik op <strong>Opnieuw</strong>. Lukt het niet, probeer het later nog eens.</td></tr>
+</table>
+
+<div class="note">
+  <p><strong>Er kan niets kapot.</strong> Bijwerken vervangt alleen de software. Het opstartprogramma van de porto en de fabriekskalibratie blijven altijd staan. Gaat er iets mis, dan blijft de porto in de bijwerk-stand (LED aan, scherm leeg) en kunt u het gewoon opnieuw doen.</p>
+</div>
+
+<h3>Terug naar een oudere versie</h3>
+<p>Het programma haalt altijd de nieuwste software; terug naar een oudere versie regelt de beheerder op GitHub door een oudere release als <em>Latest</em> te markeren, waarna het programma die versie ophaalt.</p>
+
+<h3>Het logbestand</h3>
+<p>Het programma schrijft elke keer een logbestand op het <strong>bureaublad</strong> (<em>ScoutFlasher-log-…txt</em>). Lukt iets niet, stuur dat bestand dan naar degene die u met de porto helpt.</p>
+
+<!-- ========================================== 9 Problemen oplossen -->
+<h2><span class="num">9</span>Problemen oplossen</h2>
+<table class="wrapfirst">
+  <tr><th style="width:38%">Probleem</th><th>Oplossing</th></tr>
+  <tr><td>Geen geluid, terwijl er wel iemand praat.</td><td>Zet de squelch lager (menu → Squelch). Controleer het volume. Staat de versterking (G) heel laag? Druk ▲.</td></tr>
+  <tr><td>Steeds ruis, ook zonder zender.</td><td>De squelch staat op ‘uit’. Zet hem op 3 of hoger.</td></tr>
+  <tr><td>Geluid gaat steeds kort aan en uit.</td><td>Squelch één of twee standen hoger.</td></tr>
+  <tr><td>Signaal te sterk: balk vol, peiltoon verandert niet.</td><td>Versterking lager met ▼.</td></tr>
+  <tr><td>Geen geluid na de peiltoon.</td><td>Druk zijtoets&nbsp;1 nogmaals: de T moet weg zijn.</td></tr>
+  <tr><td>Verkeerde frequentie ingetikt.</td><td>EXIT tijdens het intikken, of de juiste zes cijfers opnieuw intikken.</td></tr>
+  <tr><td>Bijwerken: <em>Geen verbinding met internet</em>.</td><td>Verbind de computer met internet (wifi of kabel) en klik op Opnieuw.</td></tr>
+  <tr><td>Bijwerken: <em>Deze versie van het programma is te oud</em>.</td><td>Klik op Nieuwe versie downloaden, sluit dit programma en start daarna het nieuwe programma.</td></tr>
+  <tr><td>Het nieuwe programma zegt <em>Het programma is al geopend</em>.</td><td>Het oude programma staat nog open (kijk in de taakbalk). Sluit het eerst en start dan het nieuwe programma.</td></tr>
+  <tr><td>Bijwerken: <em>De software kon niet goed worden opgehaald</em>.</td><td>Klik op Opnieuw; lukt het niet, probeer het later nog eens.</td></tr>
+  <tr><td>Bijwerken: <em>kabel niet gevonden</em>.</td><td>Steek de kabel in een andere USB-poort en klik Opnieuw.</td></tr>
+  <tr><td>Bijwerken: <em>stuurprogramma</em>-melding.</td><td>Klik Ja bij de vraag van Windows. Haal daarna de kabel uit de computer en steek hem er weer in.</td></tr>
+  <tr><td>Bijwerken: <em>porto niet gevonden</em>.</td><td>Brandt de zaklamp-LED wit? Zo niet: porto uit, PTT ingedrukt houden, aanzetten. Zit de stekker helemaal in de porto? Hij moet stevig aangedrukt worden.</td></tr>
+  <tr><td>Bijwerken mislukt halverwege.</td><td>Niets aan de hand: porto uit, opnieuw in de bijwerk-stand zetten (stap 5) en Opnieuw klikken.</td></tr>
+  <tr><td>Iets anders.</td><td>Stuur het logbestand van het bureaublad naar degene die u met de porto helpt.</td></tr>
+</table>
+
+<!-- ======================================= 10 Technische gegevens -->
+<h2><span class="num">10</span>Technische gegevens</h2>
+<table>
+  <tr><th>Onderwerp</th><th>Gegevens</th></tr>
+  <tr><td>Software</td><td>AMG scout, versie {{VERSION}} (staat op het welkomstscherm, in het menu en bij Info)</td></tr>
+  <tr><td>Porto versie 1</td><td>Quansheng UV-K5, processor DP32G030, opstartprogramma 2.00.06; bijgewerkt met K5TOOL</td></tr>
+  <tr><td>Porto versie 3</td><td>Quansheng UV-K5 V3 / UV-K1, processor PY32F071, opstartprogramma 7.00.07; bijgewerkt met k5v3-flasher</td></tr>
+  <tr><td>Ontvanger</td><td>BK4819; vaste versterking G:00 – G:16 (stappen van ca. 5&nbsp;dB, G:07 = −44&nbsp;dB)</td></tr>
+  <tr><td>Bij aanzetten</td><td>144.450 MHz, FM, smal (12,5 kHz), squelch 3, versterking 7, peiltoon uit</td></tr>
+  <tr><td>Scanner</td><td>144,0 – 146,0 MHz en 433,0 – 435,0 MHz in stappen van 12,5 kHz; vijf sterkste</td></tr>
+  <tr><td>Squelch</td><td>Drempels uit de fabriekskalibratie van elke porto (standen 1–9), zoals de reald-firmware ze gebruikt. De RSSI-drempel wordt verlaagd met de ingestelde verzwakking, zodat de squelch niet dicht blijft door een lage versterking; de ruis- en glitch-drempels beslissen dan. Heeft een band geen kalibratie, dan staat de squelch daar open.</td></tr>
+  <tr><td>Peiltoon</td><td>200 Hz (zwak) tot 2,8 kHz (sterk), volgt de gemiddelde RSSI</td></tr>
+  <tr><td>Zenden</td><td>Vergrendeld met pincode; 144–146 en 430–440 MHz; zeer laag vermogen; max. 60 s</td></tr>
+  <tr><td>Kabel</td><td>Prolific PL2303 (stuurprogramma 3.3.11.152 wordt door ScoutFlasher geïnstalleerd)</td></tr>
+  <tr><td>Updates</td><td>Altijd de nieuwste release van github.com/DeDuben7/quansheng-uvk5-ardf (internet nodig)</td></tr>
+</table>
+
+<h3>De squelch nameten</h3>
+<p>Menu → Info → <span class="key">▼</span> toont de squelch <strong>live</strong>. Bovenaan de stand en of de squelch open of dicht is. Daaronder per meting de waarde van nu, de drempel om te openen (o) en de drempel om te sluiten (c):</p>
+<table>
+  <tr><th>Regel</th><th>Wat het is</th><th>Squelch gaat open als</th></tr>
+  <tr><td>RSSI</td><td>Signaalsterkte</td><td>RSSI boven o</td></tr>
+  <tr><td>NOIS</td><td>Ruis in het signaal</td><td>ruis onder o</td></tr>
+  <tr><td>GLIT</td><td>Storingspieken</td><td>glitch onder o</td></tr>
+</table>
+<p>Zet de meetzender op de frequentie van de porto en verhoog het niveau langzaam. Noteer bij welk niveau de squelch op <em>OPEN</em> springt, en wat RSSI, NOIS en GLIT dan aangeven. Met die getallen kan de squelch in een volgende versie worden bijgesteld. De squelch is gemaakt voor FM; werkt hij in AM niet goed, zet hem dan op ‘uit’.</p>
+
+<h3>Gevoeligheid meten</h3>
+<p>Met een meetzender kunt u controleren of een porto nog goed gevoelig is. Het RSSI-getal op het hoofdscherm is de ruwe meting van de BK4819: ongeveer 2 eenheden per dB. Vergelijk bij dezelfde frequentie, hetzelfde niveau en dezelfde versterking (G) de twee porto’s met elkaar.</p>
+<p>Menu → Info → <span class="key">M</span> start een <strong>versterkingsmeting</strong>: zet de meetzender op een vaste draaggolf op de ingestelde frequentie. De porto meet alle versterkingsstanden achter elkaar (<em>keep the carrier steady…</em>) en toont per stand de gemiddelde RSSI. Zo ziet u of elke stap ongeveer even groot is.</p>
+
+<p class="muted small" style="margin-top:8mm">De afbeeldingen van de porto zijn getekend; de schermafbeeldingen komen uit de echte porto-software in een emulator.</p>
+
+</div>
+</body>
+</html>

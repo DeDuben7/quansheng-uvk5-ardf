@@ -1,0 +1,47 @@
+*.d
+*.o
+firmware
+/firmware.packed.bin
+/firmware.bin
+/compiled-firmware
+.cache
+compile_commands.json
+.vscode
+/docs/*.pdf
+k5_eeprom.raw
+*~
+__pycache__/
+
+# Build artifacts
+firmware_uvk5_v1
+firmware_uvk5_v1.bin
+firmware_uvk5_v1.packed.bin
+firmware_uvk5_v3
+firmware_uvk5_v3.bin
+*.o
+*.d
+nul
+build_output.txt
+
+# Flash / tool logs
+*.log
+*.log.bak
+
+# Per-platform object trees
+build/
+
+# Manual build temp, release output, flasher build
+docs/manual/_build.html
+docs/manual/img/_render.html
+/release/
+tools/scout-flasher/build/
+tools/scout-flasher/dist/
+tools/scout-flasher/sf/_build_info.py
+# Prolific driver: exported from the build PC by tools/release.ps1, never in git
+tools/scout-flasher/driver/
+
+# Agent worktrees and local tool state
+.claude/
+
+# Private development notes (kept outside the public repo)
+docs/superpowers/
