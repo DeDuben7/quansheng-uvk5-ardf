@@ -7,6 +7,7 @@
 #include "scout/scan.h"
 #include "radio/radio.h"
 #include "audio_df/audio_df.h"
+#include "bk4819/bk4819.h"
 #include "peripherals/audio_path.h"
 #include "st7565/st7565.h"
 #include "ui/helper.h"
@@ -15,6 +16,14 @@
 #define NUM_CANDIDATES 5u
 #define MERGE_HZ       25000u   // candidates this close are one signal
 #define SATURATED_RSSI 250u
+
+// Settle wait per step. After radio_tune_raw the glitch indicator (REG_63)
+// reads high until the receiver has settled on the new channel; read RSSI
+// once it drops below SETTLE_GLITCH, as armel's V3 spectrum scanner does.
+// A busy channel can keep it high, so give up after SETTLE_MAX_POLLS
+// checks (one register read each, ~0.1 ms) and read anyway.
+#define SETTLE_GLITCH    200u
+#define SETTLE_MAX_POLLS 50u
 
 // Sweep ranges (spec): NL fox-hunt territory, not the full bands.
 #define RANGE_2M_LO_HZ  144000000u
@@ -34,7 +43,7 @@ typedef struct {
 
 static scan_state_t s_state;
 static bool         s_done;
-static bool         s_first_settle;   // skip the read on the tick right after start_sweep
+static uint8_t      s_polls;          // settle checks for the current step
 
 // Radio state saved on entry, restored on exit/tune.
 static uint32_t          s_saved_freq_hz;
@@ -54,10 +63,9 @@ static void start_sweep(void)
     memset(s_cand, 0, sizeof(s_cand));
     s_step  = 0;
     s_state = SCAN_SWEEPING;
-    // Tune the first step now; scan_task reads its RSSI one tick
-    // (~10 ms settle) later.
+    // Tune the first step now; scan_task reads its RSSI once it settled.
     radio_tune_raw(s_lo_hz);
-    s_first_settle = true;
+    s_polls = 0;
 }
 
 // Insert (hz, rssi) into the top-5, strongest first. A reading within
@@ -150,22 +158,29 @@ void scan_task(void)
     if (s_state != SCAN_SWEEPING || s_done)
         return;
 
-    if (s_first_settle)
-    {
-        // start_sweep() ran earlier this same tick; give step 0 the same
-        // ~10 ms settle every other step gets before its RSSI is read.
-        s_first_settle = false;
+    // Not settled yet: check again on the next call.
+    if (BK4819_GetGlitchIndicator() >= SETTLE_GLITCH
+        && ++s_polls < SETTLE_MAX_POLLS)
         return;
-    }
 
-    // The step tuned on the previous tick has had ~10 ms to settle.
+    // The first RSSI read after a retune can still be moving; keep the
+    // second (armel does the same).
+    (void)radio_get_rssi();
     consider_candidate(s_lo_hz + s_step * STEP_HZ, radio_get_rssi());
 
     s_step++;
     if (s_step >= s_total_steps)
         s_state = SCAN_RESULTS;
     else
+    {
         radio_tune_raw(s_lo_hz + s_step * STEP_HZ);
+        s_polls = 0;
+    }
+}
+
+bool scan_is_sweeping(void)
+{
+    return s_state == SCAN_SWEEPING && !s_done;
 }
 
 bool scan_handle_key(KEY_Code_t key, bool is_long)

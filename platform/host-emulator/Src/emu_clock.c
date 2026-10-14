@@ -1,5 +1,7 @@
-/* Simulated clock. The firmware only "spends" time in SYSTEM_DelayMs (the
- * main loop waits 10 ms per pass), so advancing the clock there — one
+/* Simulated clock. The firmware "spends" time in SYSTEM_DelayMs (the
+ * main loop waits 10 ms per pass) and on the BK4819 bus (emu_spend_us, per
+ * register access: the DF tone and the scanner read RSSI as fast as the bus
+ * allows until the next 10 ms tick), so advancing the clock there — one
  * millisecond at a time, running due script actions — gives a faithful
  * timeline: renders every 100 ms, long presses after 500 ms, etc. */
 
@@ -14,10 +16,26 @@
 #define EMU_TIME_LIMIT_MS 600000u
 
 static uint32_t s_now_ms;
+static uint32_t s_spent_us;   /* bus time not yet a whole millisecond */
 
 uint32_t emu_now_ms(void)
 {
     return s_now_ms;
+}
+
+uint32_t emu_now_us(void)
+{
+    return s_now_ms * 1000u + s_spent_us;
+}
+
+void emu_spend_us(uint32_t us)
+{
+    s_spent_us += us;
+    while (s_spent_us >= 1000u)
+    {
+        s_spent_us -= 1000u;
+        emu_advance_ms(1);
+    }
 }
 
 void emu_advance_ms(uint32_t ms)

@@ -7,8 +7,9 @@
  * The application:
  *   - calls audio_df_init() once at boot
  *   - calls audio_df_toggle() on a button press
- *   - calls audio_df_task_10ms() from the scheduler with the latest RSSI
- *     and a smoothed running-average RSSI (the tone tracks the average)
+ *   - calls audio_df_set_rssi() with every raw RSSI reading (the tone
+ *     tracks the raw RSSI, no averaging)
+ *   - calls audio_df_task() every 10 ms
  */
 
 #ifndef AUDIO_DF_H
@@ -42,8 +43,12 @@ void audio_df_disable(void);
 
 bool audio_df_is_active(void);
 
-// Call from the scheduler with the latest smoothed RSSI. Cheap if the
-// module is inactive (early return).
-void audio_df_task(uint16_t smoothed_rssi);
+// Call with every raw RSSI reading, as often as RSSI is read: the pitch
+// follows it directly. Writes REG_71 only when the pitch changes. Cheap if
+// the module is inactive (early return).
+void audio_df_set_rssi(uint16_t rssi);
+
+// Call every 10 ms: keeps AF on ALAM (see audio_df.c).
+void audio_df_task(void);
 
 #endif

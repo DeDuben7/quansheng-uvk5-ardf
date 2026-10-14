@@ -7,7 +7,9 @@
  *     the chip's RSSI, noise and glitch indicators next to the open (o) and
  *     close (c) thresholds actually programmed in the BK4819, and whether
  *     the squelch is open. Noise and glitch open when BELOW their threshold,
- *     RSSI when above it.
+ *     RSSI when above it. The last line is the RSSI read rate: readings per
+ *     second (RD/s) and how many of them changed (CHG), which shows how
+ *     often the chip updates its RSSI. Fast only while the DF tone is on.
  */
 
 #include <string.h>
@@ -23,6 +25,7 @@
 #include "st7565/st7565.h"
 #include "ui/helper.h"
 #include "scout/version.h"
+#include "scout/app.h"
 
 extern uint8_t gStatusLine[128];
 
@@ -112,6 +115,11 @@ static void render_squelch(void)
     snprintf(buf, sizeof(buf), "%lu.%04lu G:%02u", (unsigned long)(hz / 1000000u),
              (unsigned long)((hz % 1000000u) / 100u), radio_get_gain_index());
     UI_PrintStringSmallNormal(buf, 0, 0, 4);
+
+    uint16_t reads, changes;
+    scout_app_get_rssi_rate(&reads, &changes);
+    snprintf(buf, sizeof(buf), "RD/s%5u CHG%5u", reads, changes);
+    UI_PrintStringSmallNormal(buf, 0, 0, 5);
 }
 
 void scout_info_render(void)

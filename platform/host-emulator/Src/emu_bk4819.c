@@ -1,13 +1,21 @@
 /* BK4819 fake: a register file. Writes are remembered and read back, with
- * three exceptions that make the radio logic testable:
+ * four exceptions that make the radio logic testable:
  *   REG_67  returns the RSSI the scene set (`rssi <n>`), or a station's
  *           RSSI when the tuned frequency (REG_38/39) is within 6.25 kHz
  *           of one (`signal <hz> <rssi>`);
  *   REG_0C  bit 0 = interrupt pending (`sql open|close` raised one);
  *   REG_02  a write latches the pending flags into REG_02 and clears them —
  *           the same write-0-then-read sequence reald's CheckRadioInterrupts
- *           (and radio_squelch_task) use.
+ *           (and radio_squelch_task) use;
+ *   REG_63  (glitch indicator) reads 255 for EMU_SETTLE_US after a REG_30
+ *           write (an RX restart, as the scanner does per step), so the
+ *           scanner's settle wait runs. The real settle time is not
+ *           measured; this only exercises the wait.
  * Interrupts are only raised when enabled in the REG_3F mask (same bits).
+ *
+ * Bus time: every register access costs EMU_BUS_US of simulated time,
+ * about one bit-banged access on a V1 (24 clocks at ~1 us per edge, an
+ * estimate). The DF tone and scanner loops run on it.
  *
  * Squelch model: `sql open|close` puts a carrier on or off the air and
  * raises the matching edge. BK4819_RX_TurnOn (which BK4819_SetupSquelch
@@ -28,6 +36,10 @@ static uint16_t s_irq;          /* pending REG_02 flags */
 static bool     s_carrier;      /* `sql open` until `sql close` */
 static bool     s_reevaluate;   /* RX restarted: re-check the carrier */
 static unsigned s_rx_restarts;  /* BK4819_RX_TurnOn calls (`count reset`) */
+
+#define EMU_BUS_US    100u
+#define EMU_SETTLE_US 2000u
+static uint32_t s_settle_until_us;  /* REG_63 reads 255 until then */
 
 #define MAX_STATIONS 8
 static struct { uint32_t f10; uint16_t rssi; } s_stations[MAX_STATIONS];
@@ -63,19 +75,24 @@ void     emu_bk_reset_counts(void) { s_rx_restarts = 0; }
 
 void BK4819_WriteRegister(BK4819_REGISTER_t reg, uint16_t val)
 {
+    emu_spend_us(EMU_BUS_US);
     if (reg == BK4819_REG_02)
     {
         s_regs[0x02] = s_irq;
         s_irq = 0;
         return;
     }
+    if (reg == BK4819_REG_30)
+        s_settle_until_us = emu_now_us() + EMU_SETTLE_US;
     s_regs[reg & 0x7Fu] = val;
 }
 
 uint16_t BK4819_ReadRegister(BK4819_REGISTER_t reg)
 {
+    emu_spend_us(EMU_BUS_US);
     if (reg == BK4819_REG_0C) return s_irq ? 1u : 0u;
     if (reg == BK4819_REG_67) return rssi_here() & 0x01FFu;
+    if (reg == BK4819_REG_63 && emu_now_us() < s_settle_until_us) return 255u;
     return s_regs[reg & 0x7Fu];
 }
 

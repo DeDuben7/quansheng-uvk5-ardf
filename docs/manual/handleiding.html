@@ -304,6 +304,7 @@
   <div class="grow">
     <div class="note">
       <p>De peiltoon werkt ook als de squelch aan staat: hij reageert op de signaalsterkte, niet op het geluid.</p>
+      <p>De toon volgt elke verandering van het signaal meteen, zonder middeling. Daardoor kan hij wat trillen. De balk op het scherm toont het gemiddelde en is rustiger.</p>
     </div>
   </div>
 </div>
@@ -409,7 +410,7 @@
   <tr><td>Bij aanzetten</td><td>144.450 MHz, FM, smal (12,5 kHz), squelch 3, versterking 7, peiltoon uit</td></tr>
   <tr><td>Scanner</td><td>144,0 – 146,0 MHz en 433,0 – 435,0 MHz in stappen van 12,5 kHz; vijf sterkste</td></tr>
   <tr><td>Squelch</td><td>Drempels uit de fabriekskalibratie van elke porto (standen 1–9), zoals de reald-firmware ze gebruikt. De RSSI-drempel wordt verlaagd met de ingestelde verzwakking, zodat de squelch niet dicht blijft door een lage versterking; de ruis- en glitch-drempels beslissen dan. Heeft een band geen kalibratie, dan staat de squelch daar open.</td></tr>
-  <tr><td>Peiltoon</td><td>200 Hz (zwak) tot 2,8 kHz (sterk), volgt de gemiddelde RSSI</td></tr>
+  <tr><td>Peiltoon</td><td>200 Hz (zwak) tot 2,8 kHz (sterk), volgt de RSSI direct (zonder middeling)</td></tr>
   <tr><td>Zenden</td><td>Vergrendeld met pincode; 144–146 en 430–440 MHz; zeer laag vermogen; max. 60 s</td></tr>
   <tr><td>Kabel</td><td>Prolific PL2303 (stuurprogramma 3.3.11.152 wordt door ScoutFlasher geïnstalleerd)</td></tr>
   <tr><td>Updates</td><td>Altijd de nieuwste release van github.com/DeDuben7/quansheng-uvk5-ardf (internet nodig)</td></tr>
@@ -424,6 +425,7 @@
   <tr><td>GLIT</td><td>Storingspieken</td><td>glitch onder o</td></tr>
 </table>
 <p>Zet de meetzender op de frequentie van de porto en verhoog het niveau langzaam. Noteer bij welk niveau de squelch op <em>OPEN</em> springt, en wat RSSI, NOIS en GLIT dan aangeven. Met die getallen kan de squelch in een volgende versie worden bijgesteld. De squelch is gemaakt voor FM; werkt hij in AM niet goed, zet hem dan op ‘uit’.</p>
+<p>De regel <strong>RD/s</strong> toont hoe vaak per seconde de porto de RSSI leest, <strong>CHG</strong> hoe vaak die waarde veranderde. Met de peiltoon aan leest de porto zo vaak als de ontvangerchip toelaat; CHG laat dan zien hoe vaak de chip zelf een nieuwe meting geeft.</p>
 
 <h3>Gevoeligheid meten</h3>
 <p>Met een meetzender kunt u controleren of een porto nog goed gevoelig is. Het RSSI-getal op het hoofdscherm is de ruwe meting van de BK4819: ongeveer 2 eenheden per dB. Vergelijk bij dezelfde frequentie, hetzelfde niveau en dezelfde versterking (G) de twee porto’s met elkaar.</p>

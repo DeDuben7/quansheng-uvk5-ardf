@@ -36,3 +36,8 @@ scanner_sweep_stays_quiet: wait 2500; press MENU; press UP; press UP; press MENU
 menu_band_after_entry: wait 2500; press 4; press 3; press 3; press 5; press 0; press 0; press MENU; press DOWN; press DOWN; press MENU; press UP; press MENU; expect freq 144450000
 sql_gain_change_no_rx_restart: wait 2500; sql open; wait 30; count reset; press UP; press DOWN; expect restarts 0; expect af fm; expect audio on
 info_pages: wait 2500; press MENU; press UP; press MENU; press DOWN; press EXIT; expect sql 3; press EXIT; expect freq 144450000
+# The DF tone follows the raw RSSI within milliseconds, no averaging.
+# REG_71 = tone frequency: 0x7218 = 2829 Hz (RSSI >= ceil 200), 0x0811 = 200 Hz (RSSI <= floor 40).
+df_tone_follows_raw_rssi: wait 2500; press SIDE1; rssi 250; wait 5; expect reg 71 7218; rssi 30; wait 5; expect reg 71 0811
+# The scanner waits for the glitch indicator per step instead of 10 ms: a sweep ends well within a second.
+scanner_sweep_is_fast: signal 145287500 170; wait 2500; press MENU; press UP; press UP; press MENU; wait 800; press 1; wait 300; expect freq 145287500

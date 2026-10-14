@@ -3,6 +3,18 @@
 Newest first. `tools/release.ps1 -Publish` uses the `## X.Y` section of a
 release as its notes on GitHub.
 
+## 1.2
+
+- The DF tone (peiltoon) follows the signal strength directly, without
+  averaging. While the tone is on, the radio reads the signal strength as
+  fast as the receiver chip allows, instead of 100 times per second, and
+  every reading goes straight to the tone. The bargraph on the screen still
+  shows the average.
+- The scanner waits on each frequency only until the receiver has settled,
+  instead of a fixed 10 ms, so a sweep takes much less time.
+- The live squelch page in Info shows how often per second the radio reads
+  the signal strength (RD/s) and how often that value changed (CHG).
+
 ## 1.1
 
 - ScoutFlasher is online only. At every start it downloads the newest

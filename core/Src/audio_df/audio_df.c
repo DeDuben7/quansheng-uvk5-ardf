@@ -108,15 +108,21 @@ bool audio_df_is_active(void)
     return s_active;
 }
 
-void audio_df_task(uint16_t smoothed_rssi)
+void audio_df_set_rssi(uint16_t rssi)
 {
     if (!s_active) return;
-    uint16_t hz = rssi_to_tone_hz(smoothed_rssi);
+    uint16_t hz = rssi_to_tone_hz(rssi);
     if (hz != s_last_tone_hz)
     {
         set_tone_hz_register(hz);
     }
+}
+
+void audio_df_task(void)
+{
+    if (!s_active) return;
     // Re-assert AF=ALAM each tick — anything that re-runs the RX state
     // machine would otherwise pull AF back to FM/AM and silence the tone.
+    // Every 10 ms, not on every RSSI reading: the bus stays free for RSSI.
     BK4819_SetAF(BK4819_AF_ALAM);
 }

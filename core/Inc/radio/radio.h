@@ -39,10 +39,12 @@ radio_status_t radio_init(const radio_config_t* cfg);
 void               radio_set_frequency(uint32_t hz);
 uint32_t           radio_get_frequency(void);
 
-// Fast retune for scanning: programs the PLL (+ VCO recalibration) but
-// does NOT update the stored frequency, clear mistune, or re-pick the
-// RX filter path (pick it once via radio_set_frequency before a sweep).
-// Always restore with radio_set_frequency() when the sweep ends.
+// Fast retune for scanning: programs the PLL and restarts the RX (REG_30
+// off/on, which also recalibrates the VCO) but does NOT update the stored
+// frequency, clear mistune, or re-pick the RX filter path (pick it once
+// via radio_set_frequency before a sweep). Wait until the glitch indicator
+// drops before reading RSSI (see scan.c). Always restore with
+// radio_set_frequency() when the sweep ends.
 void radio_tune_raw(uint32_t hz);
 
 void               radio_set_modulation(radio_modulation_t mod);

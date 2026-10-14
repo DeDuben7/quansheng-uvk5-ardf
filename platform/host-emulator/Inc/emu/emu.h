@@ -8,9 +8,12 @@
 
 #include "peripherals/keyboard.h"
 
-/* Simulated clock (emu_clock.c). Time only moves when the firmware waits. */
+/* Simulated clock (emu_clock.c). Time only moves when the firmware waits
+ * or uses the BK4819 bus. */
 uint32_t   emu_now_ms(void);
+uint32_t   emu_now_us(void);
 void       emu_advance_ms(uint32_t ms);   /* 1 ms steps, pumping the script */
+void       emu_spend_us(uint32_t us);     /* bus time; advances whole ms */
 
 /* Scene script (emu_script.c). */
 int        emu_script_load(const char *scene_line, const char *outdir);

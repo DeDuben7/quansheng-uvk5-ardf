@@ -12,7 +12,7 @@ menu_modulation: wait 2500; press MENU; press DOWN; press MENU; snap
 menu_band: wait 2500; press MENU; press DOWN; press DOWN; snap
 menu_band_70cm: wait 2500; press MENU; press DOWN; press DOWN; press MENU; press UP; press MENU; snap
 info: wait 2500; press MENU; press UP; press MENU; snap
-scanner: wait 2500; press MENU; press UP; press UP; press MENU; wait 300; snap
+scanner: wait 2500; press MENU; press UP; press UP; press MENU; wait 100; snap
 scanner_results: signal 145287500 170; signal 144800000 120; signal 145500000 95; wait 2500; press MENU; press UP; press UP; press MENU; wait 4000; snap
 tx_pin: wait 2500; press F; snap
 tx_locked: wait 2500; press PTT; wait 200; snap

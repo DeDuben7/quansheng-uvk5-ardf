@@ -376,8 +376,11 @@ void radio_tune_raw(uint32_t hz)
     const uint32_t f10 = hz / 10u;   // BK4819 unit = 10 Hz
     BK4819_SetFrequency(f10);
 
+    // Everything off, then back on: restarts the RX DSP, so the glitch
+    // indicator (REG_63) reads high until the new channel has settled.
+    // Same sequence as the spectrum scanners of egzumer (V1) and armel (V3).
     const uint16_t reg = BK4819_ReadRegister(BK4819_REG_30);
-    BK4819_WriteRegister(BK4819_REG_30, reg & ~BK4819_REG_30_ENABLE_VCO_CALIB);
+    BK4819_WriteRegister(BK4819_REG_30, 0);
     BK4819_WriteRegister(BK4819_REG_30, reg);
 }
 

@@ -1,8 +1,9 @@
 /* scout-v2 application main loop.
  *
  * Polls the keyboard with simple debounce, dispatches presses, runs
- * the squelch gate and the audio-DF task with a smoothed RSSI, and
- * re-renders the current screen at ~10 Hz.
+ * the squelch gate, feeds the audio-DF tone the raw RSSI (as fast as the
+ * BK4819 bus allows while the tone is on), and re-renders the current
+ * screen at ~10 Hz.
  *
  * Home screen keys: digits = frequency entry, UP/DOWN = gain, SIDE1 = DF
  * tone, MENU = settings menu (scout/menu.h: squelch, modulation, band,
@@ -28,10 +29,37 @@
 #include "peripherals/system.h"
 #include "peripherals/scheduler.h"
 
+// --- Raw RSSI --------------------------------------------------------------
+// The DF tone follows the raw RSSI, no averaging. While the tone is on, the
+// main loop reads RSSI as fast as the BK4819 bus allows (one read is about
+// 0.1 ms) between its 10 ms tasks, and every reading goes to the tone.
+static uint16_t s_rssi_raw;
+
+// Readings per second, and how many of them differed from the one before:
+// the second number shows how often the chip itself updates its RSSI.
+// Shown on the Info squelch page.
+static uint32_t s_rate_reads, s_rate_changes;     // current 1 s window
+static uint16_t s_reads_per_s, s_changes_per_s;   // last full window
+
+static void rssi_read(void)
+{
+    const uint16_t rssi = radio_get_rssi();
+    if (rssi != s_rssi_raw)
+        s_rate_changes++;
+    s_rssi_raw = rssi;
+    s_rate_reads++;
+}
+
+void scout_app_get_rssi_rate(uint16_t* reads_per_s, uint16_t* changes_per_s)
+{
+    *reads_per_s   = s_reads_per_s;
+    *changes_per_s = s_changes_per_s;
+}
+
 // --- Smoothed RSSI ---------------------------------------------------------
-// 30-sample moving average at 100 Hz -> 300 ms window.
-// Bigger window = steadier display + less audible tone jitter, at the cost
-// of a small latency when sweeping the antenna.
+// 30-sample moving average at 100 Hz -> 300 ms window, for the display.
+// Bigger window = steadier display, at the cost of a small latency when
+// sweeping the antenna. The DF tone does not use it.
 #define RSSI_AVG_LEN 30u
 static uint16_t s_rssi_buf[RSSI_AVG_LEN];
 static uint8_t  s_rssi_idx;
@@ -194,6 +222,7 @@ static void menu_key(KEY_Code_t k)
 void scout_app_run(void)
 {
     uint32_t last_render_tick = 0;
+    uint32_t last_rate_tick = 0;
     for (;;)
     {
         KEY_Code_t key = KEY_INVALID;
@@ -253,29 +282,41 @@ void scout_app_run(void)
             radio_squelch_task();
 
         // Sample RSSI every loop iteration into the moving average
-        // (meaningless while transmitting, so frozen then).
+        // (meaningless while transmitting, so frozen then). The DF tone
+        // gets the raw reading.
         if (!scout_tx_active())
-            rssi_avg_push(radio_get_rssi());
+        {
+            rssi_read();
+            rssi_avg_push(s_rssi_raw);
+            audio_df_set_rssi(s_rssi_raw);
+        }
 
         // Battery sampling (module self-limits to ~500 ms).
         battery_task();
 
-        // Feed audio-DF.
-        audio_df_task(s_rssi_avg);
+        // Keep the audio-DF route.
+        audio_df_task();
 
         if (s_screen == SCREEN_GAINCAL)
             gaincal_task();
 
-        // Scanner sweep progress + return-to-home when it finishes.
-        if (s_screen == SCREEN_SCAN)
+        // Return to home when the scanner finishes.
+        if (s_screen == SCREEN_SCAN && scan_is_done())
+            s_screen = SCREEN_HOME;
+
+        uint32_t now = scout_tick_10ms();
+
+        // RSSI read rate for the Info page, once per second.
+        if ((now - last_rate_tick) >= 100)
         {
-            scan_task();
-            if (scan_is_done())
-                s_screen = SCREEN_HOME;
+            last_rate_tick  = now;
+            s_reads_per_s   = (uint16_t)s_rate_reads;
+            s_changes_per_s = (uint16_t)s_rate_changes;
+            s_rate_reads    = 0;
+            s_rate_changes  = 0;
         }
 
         // Re-render at ~10 Hz.
-        uint32_t now = scout_tick_10ms();
         if ((now - last_render_tick) >= 10)
         {
             last_render_tick = now;
@@ -291,6 +332,26 @@ void scout_app_run(void)
                 scout_home_render();
         }
 
-        SYSTEM_DelayMs(10);
+        // Rest of this 10 ms tick. Scanner sweeping: step as fast as the
+        // receiver settles. DF tone on: read RSSI and steer the tone as
+        // fast as the bus allows. Otherwise just wait.
+        const uint32_t tick = scout_tick_10ms();
+        if (s_screen == SCREEN_SCAN && scan_is_sweeping())
+        {
+            while (scout_tick_10ms() == tick && scan_is_sweeping())
+                scan_task();
+        }
+        else if (audio_df_is_active() && !scout_tx_active())
+        {
+            while (scout_tick_10ms() == tick)
+            {
+                rssi_read();
+                audio_df_set_rssi(s_rssi_raw);
+            }
+        }
+        else
+        {
+            SYSTEM_DelayMs(10);
+        }
     }
 }
