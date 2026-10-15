@@ -20,6 +20,7 @@ void scout_tx_task(bool can_start);
 
 bool     scout_tx_active(void);       // transmitting right now
 bool     scout_tx_unlocked(void);
+bool     scout_tx_ptt_held(void);     // PTT pressed (debounced), locked or not
 uint16_t scout_tx_elapsed_s(void);    // seconds into the current TX
 
 // F key: locked -> open PIN prompt, unlocked -> lock again.

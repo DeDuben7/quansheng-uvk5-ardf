@@ -13,4 +13,9 @@
 
 uint32_t scout_tick_10ms(void);
 
+/* Free-running microsecond counter (the 10 ms tick plus the SysTick count
+ * inside it). Rolls over after ~71 minutes; compare deltas only. For
+ * timing short stretches of code, not for scheduling. */
+uint32_t scout_time_us(void);
+
 #endif /* PERIPHERALS_SCHEDULER_H */

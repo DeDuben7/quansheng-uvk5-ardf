@@ -13,7 +13,10 @@
  *   expect <what> <value>     audio on|off (speaker path), af mute|fm|am|alam
  *                             (BK4819 AF output, REG_47), freq <hz>,
  *                             mod FM|AM, df on|off, gain <n>, sql <n>,
- *                             restarts <n>, reg <hex> <hex>
+ *                             restarts <n>, reg <hex> <hex>,
+ *                             bar <px> (filled width of the home-screen
+ *                             RSSI bar, 0..128, as last rendered),
+ *                             light on|off (LCD backlight)
  *
  * Keys: 0-9 MENU UP DOWN EXIT STAR F PTT SIDE1 SIDE2.
  * Actions run on the simulated clock (emu_script_pump is called every
@@ -31,6 +34,7 @@
 #include "bk4819/bk4819_regs.h"
 #include "emu/emu.h"
 #include "radio/radio.h"
+#include "st7565/st7565.h"
 
 #define MAX_ACTIONS 256
 
@@ -148,7 +152,8 @@ static int parse_command(char *cmd)
             a->value  = strtol(argv[2], NULL, 16);
             a->value2 = strtol(argv[3], NULL, 16);
         }
-        else if (strcmp(argv[1], "audio") == 0 || strcmp(argv[1], "df") == 0)
+        else if (strcmp(argv[1], "audio") == 0 || strcmp(argv[1], "df") == 0
+                 || strcmp(argv[1], "light") == 0)
             a->value = strcmp(argv[2], "on") == 0;
         else if (strcmp(argv[1], "mod") == 0)
             a->value = strcmp(argv[2], "AM") == 0 ? RADIO_MOD_AM : RADIO_MOD_FM;
@@ -202,11 +207,20 @@ static long actual_value(const action_t *a, bool *known)
     if (strcmp(a->what, "freq") == 0)  return (long)radio_get_frequency();
     if (strcmp(a->what, "mod") == 0)   return radio_get_modulation();
     if (strcmp(a->what, "df") == 0)    return audio_df_is_active();
+    if (strcmp(a->what, "light") == 0) return emu_backlight_on();
     if (strcmp(a->what, "gain") == 0)  return radio_get_gain_index();
     if (strcmp(a->what, "sql") == 0)   return radio_get_squelch();
     if (strcmp(a->what, "restarts") == 0) return (long)emu_bk_rx_restarts();
     if (strcmp(a->what, "reg") == 0)   return emu_bk_reg((uint8_t)a->value);
     if (strcmp(a->what, "af") == 0)    return (emu_bk_reg(0x47) >> 8) & 0x0Fu;   /* BK4819_SetAF */
+    if (strcmp(a->what, "bar") == 0)
+    {
+        /* Home screen, frame-buffer page 5: filled columns are 0xFF from
+         * the left, the empty tube is 0x81 (scout/home.c draw_bargraph). */
+        long px = 0;
+        while (px < LCD_WIDTH && gFrameBuffer[5][px] == 0xFF) px++;
+        return px;
+    }
     *known = false;
     return 0;
 }

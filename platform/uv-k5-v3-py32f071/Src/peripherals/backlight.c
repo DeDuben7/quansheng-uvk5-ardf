@@ -10,6 +10,7 @@
  * (read-modify-write-free, so no race with the SysTick handler).
  */
 #include "peripherals/backlight.h"
+#include "peripherals/backlight_hal.h"
 #include "py32f0xx.h"
 
 #define BACKLIGHT_PIN 8u
@@ -34,4 +35,11 @@ void BACKLIGHT_Off(void)
 {
     backlight_gpio_init();
     GPIOF->BSRR = (1u << (BACKLIGHT_PIN + 16u));
+}
+
+/* Shared contract for core (peripherals/backlight_hal.h). */
+void backlight_hal_set(bool on)
+{
+    if (on) BACKLIGHT_On();
+    else    BACKLIGHT_Off();
 }

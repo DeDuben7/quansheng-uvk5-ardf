@@ -12,7 +12,7 @@ sql_recomputed_on_gain_change: wait 2500; press UP; expect gain 8; expect reg 78
 sql_irq_enabled: wait 2500; expect reg 3F 000C
 df_holds_audio: wait 2500; press SIDE1; sql close; wait 30; expect audio on; press SIDE1; expect audio off
 df_tone_survives_gain_change: wait 2500; press SIDE1; wait 300; expect reg 70 E000; press UP; wait 30; expect df on; expect reg 70 E000; expect audio on
-# Settings menu (MENU short). Items: Squelch, Modulatie, Band, Scanner, Info.
+# Settings menu (MENU short). Items: Squelch, Modulatie, Band, Verlichting, Scanner, Info.
 menu_squelch_to_off: wait 2500; press MENU; press MENU; press DOWN; press DOWN; press DOWN; press MENU; expect sql 0; expect audio on
 menu_squelch_clamps: wait 2500; press MENU; press MENU; press DOWN; press DOWN; press DOWN; press DOWN; expect sql 0; press UP; expect sql 1
 menu_squelch_live_then_cancel: wait 2500; press MENU; press MENU; press UP; expect sql 4; press EXIT; expect sql 3
@@ -20,7 +20,7 @@ menu_modulation: wait 2500; press MENU; press DOWN; press MENU; press UP; press 
 menu_band: wait 2500; press MENU; press DOWN; press DOWN; press MENU; press DOWN; press MENU; expect freq 433500000
 menu_band_back: wait 2500; press MENU; press DOWN; press DOWN; press MENU; press DOWN; press DOWN; press MENU; expect freq 144450000
 menu_band_cancel: wait 2500; press MENU; press DOWN; press DOWN; press MENU; press UP; expect freq 433500000; press EXIT; expect freq 144450000
-menu_cursor_wraps: wait 2500; press MENU; press UP; press UP; press UP; press UP; press UP; press MENU; press UP; press MENU; expect sql 4
+menu_cursor_wraps: wait 2500; press MENU; press UP; press UP; press UP; press UP; press UP; press UP; press MENU; press UP; press MENU; expect sql 4
 menu_exit_then_digits: wait 2500; press MENU; press EXIT; press 1; press 4; press 5; press 5; press 0; press 0; expect freq 145500000
 menu_keys_dont_tune: wait 2500; press MENU; press 1; press 4; press 5; press 5; press 0; press 0; expect freq 144450000
 side2_freed: wait 2500; press SIDE2; hold SIDE2; expect mod FM; expect freq 144450000
@@ -41,3 +41,9 @@ info_pages: wait 2500; press MENU; press UP; press MENU; press DOWN; press EXIT;
 df_tone_follows_raw_rssi: wait 2500; press SIDE1; rssi 250; wait 5; expect reg 71 7218; rssi 30; wait 5; expect reg 71 0811
 # The scanner waits for the glitch indicator per step instead of 10 ms: a sweep ends well within a second.
 scanner_sweep_is_fast: signal 145287500 170; wait 2500; press MENU; press UP; press UP; press MENU; wait 800; press 1; wait 300; expect freq 145287500
+# The S-meter bar follows the raw RSSI within one 40 ms frame (bar 128 px at RSSI >= 200, 0 px at <= 40).
+s_meter_follows_raw_rssi: wait 2500; rssi 200; wait 50; expect bar 128; rssi 30; wait 50; expect bar 0
+# Backlight (Menu > Verlichting), automatic at power-on: a key press lights it, 20 s after the last press it goes off.
+light_auto_off_after_20s: wait 2500; press EXIT; wait 19000; expect light on; wait 1500; expect light off; press EXIT; expect light on
+# uit: dark, key presses do not light it. aan: never goes off. Order of values: auto, aan, uit.
+light_menu_modes: wait 2500; press MENU; press DOWN; press DOWN; press DOWN; press MENU; press DOWN; press MENU; expect light off; press EXIT; expect light off; press MENU; press MENU; press DOWN; press MENU; expect light on; press EXIT; wait 25000; expect light on

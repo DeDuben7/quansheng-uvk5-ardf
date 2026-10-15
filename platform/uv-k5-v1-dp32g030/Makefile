@@ -41,6 +41,7 @@ OBJS += build/core/Src/scout/info.o
 OBJS += build/core/Src/scout/gaincal.o
 OBJS += build/core/Src/scout/version.o
 OBJS += build/core/Src/scout/menu.o
+OBJS += build/core/Src/scout/light.o
 OBJS += build/core/Src/battery/battery.o
 OBJS += build/core/Src/ui/helper.o
 OBJS += build/core/Src/ui/font.o

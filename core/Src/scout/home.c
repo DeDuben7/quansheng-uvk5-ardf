@@ -20,6 +20,7 @@
 #include "radio/radio.h"
 #include "audio_df/audio_df.h"
 #include "battery/battery.h"
+#include "peripherals/scheduler.h"
 #include "st7565/st7565.h"
 #include "ui/helper.h"
 #include "common.h"
@@ -33,6 +34,39 @@ static uint8_t s_input_len;
 // Track peak RSSI for the bargraph peak-hold marker.
 static uint16_t s_rssi_peak;
 static uint8_t  s_rssi_peak_age_ticks;
+
+// Render cost, for the Info squelch page: the longest drawing time (frame
+// buffer) and blit time (SPI to the LCD) of one home-screen frame in the
+// last second. The main loop reads no RSSI while a render runs.
+#define FRAMES_PER_S (1000u / SCOUT_FRAME_MS)
+static uint16_t s_draw_max_us, s_blit_max_us;   // current 1 s window
+static uint16_t s_draw_us, s_blit_us;           // last full window
+static uint8_t  s_render_frames;
+
+static uint16_t clamp_us(uint32_t us)
+{
+    return (us > 0xFFFFu) ? 0xFFFFu : (uint16_t)us;
+}
+
+static void render_time_note(uint32_t draw_us, uint32_t blit_us)
+{
+    if (clamp_us(draw_us) > s_draw_max_us) s_draw_max_us = clamp_us(draw_us);
+    if (clamp_us(blit_us) > s_blit_max_us) s_blit_max_us = clamp_us(blit_us);
+    if (++s_render_frames >= FRAMES_PER_S)
+    {
+        s_draw_us = s_draw_max_us;
+        s_blit_us = s_blit_max_us;
+        s_draw_max_us = 0;
+        s_blit_max_us = 0;
+        s_render_frames = 0;
+    }
+}
+
+void scout_home_get_render_us(uint16_t* draw_us, uint16_t* blit_us)
+{
+    *draw_us = s_draw_us;
+    *blit_us = s_blit_us;
+}
 
 static void draw_status_line(void)
 {
@@ -121,7 +155,7 @@ static void draw_bargraph(uint16_t rssi)
         s_rssi_peak = rssi;
         s_rssi_peak_age_ticks = 0;
     }
-    else if (++s_rssi_peak_age_ticks > 20)   // ~2 s with 100 ms render rate
+    else if (++s_rssi_peak_age_ticks > 2000u / SCOUT_FRAME_MS)   // 2 s
     {
         s_rssi_peak = rssi;
         s_rssi_peak_age_ticks = 0;
@@ -166,10 +200,11 @@ static void draw_tx(void)
 
 void scout_home_render(void)
 {
+    const uint32_t t_start = scout_time_us();
     UI_DisplayClear();
     draw_status_line();
     draw_frequency();
-    uint16_t rssi = radio_get_rssi();
+    uint16_t rssi = scout_app_get_rssi_raw();
     uint16_t avg  = scout_app_get_rssi_avg();
     if (scout_tx_active())
     {
@@ -187,9 +222,13 @@ void scout_home_render(void)
         if (msg != NULL) UI_PrintStringSmallNormal(msg, 0, 128, 4);
         else             draw_rssi(rssi, avg);
     }
-    draw_bargraph(scout_tx_active() ? 0 : avg);   // follows the average — less jitter
+    // The bar follows the raw reading, like the DF tone, so it moves as
+    // fast as the antenna turns. The "avg" number stays steady.
+    draw_bargraph(scout_tx_active() ? 0 : rssi);
+    const uint32_t t_blit = scout_time_us();
     ST7565_BlitStatusLine();
     ST7565_BlitFullScreen();
+    render_time_note(t_blit - t_start, scout_time_us() - t_blit);
 }
 
 bool scout_home_input_digit(uint8_t digit)

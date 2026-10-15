@@ -37,6 +37,7 @@ uint16_t   emu_bk_reg(uint8_t reg);
 
 /* Other fakes (emu_hal.c). */
 bool       emu_audio_path_on(void);
+bool       emu_backlight_on(void);
 extern bool g_emu_calib_blank_squelch;   /* `calib blank`: squelch tables read 0xFF */
 void       emu_read_adc(uint16_t *voltage, uint16_t *current);
 

@@ -119,6 +119,7 @@ void scout_tx_task(bool can_start)
 
 bool scout_tx_active(void)   { return s_tx; }
 bool scout_tx_unlocked(void) { return s_unlocked; }
+bool scout_tx_ptt_held(void) { return s_ptt_stable; }
 
 uint16_t scout_tx_elapsed_s(void)
 {

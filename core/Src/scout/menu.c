@@ -6,6 +6,7 @@
  *   ▓Squelch                   3▓      list mode: selected row inverted
  *    Modulatie                FM
  *    Band                    2 m
+ *    Verlichting            auto
  *    Scanner                   >
  *    Info                      >
  *
@@ -25,6 +26,7 @@
 #include "external/printf/printf.h"
 #include "radio/radio.h"
 #include "scout/config.h"
+#include "scout/light.h"
 #include "scout/menu.h"
 #include "scout/version.h"
 #include "st7565/st7565.h"
@@ -40,13 +42,14 @@ typedef enum {
     ITEM_SQUELCH = 0,
     ITEM_MODULATION,
     ITEM_BAND,
+    ITEM_LIGHT,
     ITEM_SCANNER,
     ITEM_INFO,
     ITEM_COUNT
 } item_t;
 
 static const char *const LABELS[ITEM_COUNT] = {
-    "Squelch", "Modulatie", "Band", "Scanner", "Info"
+    "Squelch", "Modulatie", "Band", "Verlichting", "Scanner", "Info"
 };
 
 static uint8_t s_cursor;
@@ -87,6 +90,7 @@ static uint8_t value_get(item_t item)
         case ITEM_SQUELCH:    return radio_get_squelch();
         case ITEM_MODULATION: return (uint8_t)radio_get_modulation();
         case ITEM_BAND:       return on_2m() ? 0u : 1u;
+        case ITEM_LIGHT:      return (uint8_t)light_get_mode();
         default:              return 0;
     }
 }
@@ -105,13 +109,16 @@ static void value_set(item_t item, uint8_t v)
             if ((v == 0) != on_2m())
                 swap_band();
             break;
+        case ITEM_LIGHT:
+            light_set_mode((light_mode_t)v);
+            break;
         default:
             break;
     }
 }
 
-// UP/DOWN in edit mode. Squelch steps and stops at 0 / 9; the two-valued
-// items toggle on either key.
+// UP/DOWN in edit mode. Squelch steps and stops at 0 / 9; the backlight
+// cycles auto -> aan -> uit; the two-valued items toggle on either key.
 static void value_step(item_t item, bool up)
 {
     const uint8_t v = value_get(item);
@@ -119,6 +126,11 @@ static void value_step(item_t item, bool up)
     {
         if (up && v < RADIO_SQL_MAX) value_set(item, (uint8_t)(v + 1));
         if (!up && v > 0)            value_set(item, (uint8_t)(v - 1));
+    }
+    else if (item == ITEM_LIGHT)
+    {
+        const uint8_t n = LIGHT_MODE_COUNT;
+        value_set(item, (uint8_t)((v + (up ? 1u : n - 1u)) % n));
     }
     else
     {
@@ -139,13 +151,21 @@ static const char *value_text(item_t item, char *buf, size_t size)
         }
         case ITEM_MODULATION: return (radio_get_modulation() == RADIO_MOD_AM) ? "AM" : "FM";
         case ITEM_BAND:       return on_2m() ? "2 m" : "70 cm";
+        case ITEM_LIGHT:
+            switch (light_get_mode())
+            {
+                case LIGHT_ON:  return "aan";
+                case LIGHT_OFF: return "uit";
+                default:        return "auto";
+            }
         default:              return ">";
     }
 }
 
 static bool is_value_item(item_t item)
 {
-    return item == ITEM_SQUELCH || item == ITEM_MODULATION || item == ITEM_BAND;
+    return item == ITEM_SQUELCH || item == ITEM_MODULATION || item == ITEM_BAND
+        || item == ITEM_LIGHT;
 }
 
 // --- Public --------------------------------------------------------------------

@@ -40,6 +40,7 @@ OBJS += build/core/Src/scout/info.o
 OBJS += build/core/Src/scout/gaincal.o
 OBJS += build/core/Src/scout/version.o
 OBJS += build/core/Src/scout/menu.o
+OBJS += build/core/Src/scout/light.o
 OBJS += build/plat/main.o
 
 CC      = arm-none-eabi-gcc

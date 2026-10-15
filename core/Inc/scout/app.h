@@ -7,8 +7,13 @@
 
 #include <stdint.h>
 
+// Every screen is re-rendered once per frame: 40 ms, 25 Hz.
+#define SCOUT_FRAME_MS 40u
+
 void     scout_app_run(void);
-// 100 ms moving-average RSSI; updated every 10 ms by the main loop.
+// Latest raw RSSI reading (no averaging).
+uint16_t scout_app_get_rssi_raw(void);
+// 300 ms moving-average RSSI; updated every 10 ms by the main loop.
 uint16_t scout_app_get_rssi_avg(void);
 // RSSI readings in the last full second, and how many of them differed
 // from the reading before (how often the chip updates its RSSI).

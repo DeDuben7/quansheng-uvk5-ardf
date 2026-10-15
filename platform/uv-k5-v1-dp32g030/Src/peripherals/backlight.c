@@ -3,6 +3,7 @@
 #include <stddef.h>
 
 #include "peripherals/backlight.h"
+#include "peripherals/backlight_hal.h"
 
 #include "bsp/dp32g030/gpio.h"
 #include "bsp/dp32g030/pwmplus.h"
@@ -85,4 +86,12 @@ bool backlight_task_500ms(void)
         return true;
     }
     return false;
+}
+
+/* Shared contract for core (peripherals/backlight_hal.h). The auto-off
+ * timing lives in core (scout/light.c); timeout_500ms stays 0 here. */
+void backlight_hal_set(bool on)
+{
+    if (on) backlight_turn_on();
+    else    backlight_turn_off();
 }

@@ -62,3 +62,8 @@ uint32_t scout_tick_10ms(void)
 {
     return s_now_ms / 10u;
 }
+
+uint32_t scout_time_us(void)
+{
+    return emu_now_us();
+}

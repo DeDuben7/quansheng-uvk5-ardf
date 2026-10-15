@@ -7,9 +7,12 @@
  *     the chip's RSSI, noise and glitch indicators next to the open (o) and
  *     close (c) thresholds actually programmed in the BK4819, and whether
  *     the squelch is open. Noise and glitch open when BELOW their threshold,
- *     RSSI when above it. The last line is the RSSI read rate: readings per
- *     second (RD/s) and how many of them changed (CHG), which shows how
- *     often the chip updates its RSSI. Fast only while the DF tone is on.
+ *     RSSI when above it. Then the RSSI read rate: readings per second
+ *     (RD/s) and how many of them changed (CHG), which shows how often the
+ *     chip updates its RSSI. Fast only while the DF tone is on. The last
+ *     line is the home screen's render cost: the longest drawing time (DRW)
+ *     and LCD blit time (BLT) of one frame, in us, from the last second the
+ *     home screen was shown. No RSSI is read while a frame renders.
  */
 
 #include <string.h>
@@ -26,6 +29,7 @@
 #include "ui/helper.h"
 #include "scout/version.h"
 #include "scout/app.h"
+#include "scout/home.h"
 
 extern uint8_t gStatusLine[128];
 
@@ -120,6 +124,11 @@ static void render_squelch(void)
     scout_app_get_rssi_rate(&reads, &changes);
     snprintf(buf, sizeof(buf), "RD/s%5u CHG%5u", reads, changes);
     UI_PrintStringSmallNormal(buf, 0, 0, 5);
+
+    uint16_t draw_us, blit_us;
+    scout_home_get_render_us(&draw_us, &blit_us);
+    snprintf(buf, sizeof(buf), "DRW%5u BLT%5u", draw_us, blit_us);
+    UI_PrintStringSmallNormal(buf, 0, 0, 6);
 }
 
 void scout_info_render(void)
@@ -127,10 +136,13 @@ void scout_info_render(void)
     UI_DisplayClear();
     memset(gStatusLine, 0, sizeof(gStatusLine));
 
+    // The squelch page uses the last line for the render cost.
     if (s_squelch_page) render_squelch();
-    else                render_factory_cal();
-
-    UI_PrintStringSmallNormal("UP/DOWN  MENU=gain", 0, 128, 6);
+    else
+    {
+        render_factory_cal();
+        UI_PrintStringSmallNormal("UP/DOWN  MENU=gain", 0, 128, 6);
+    }
 
     ST7565_BlitStatusLine();
     ST7565_BlitFullScreen();

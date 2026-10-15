@@ -10,6 +10,9 @@
 #include <stdbool.h>
 
 void scout_home_render(void);
+// Longest drawing and blit time (us) of one home-screen frame in the last
+// second the home screen was shown.
+void scout_home_get_render_us(uint16_t* draw_us, uint16_t* blit_us);
 
 // Push a digit into the in-progress frequency-entry buffer. Returns true
 // if the buffer is now full and the application should call _commit().

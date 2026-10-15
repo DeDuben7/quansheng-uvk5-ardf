@@ -24,6 +24,7 @@ CORE_SRCS += Src/scout/info.c
 CORE_SRCS += Src/scout/gaincal.c
 CORE_SRCS += Src/scout/version.c
 CORE_SRCS += Src/scout/menu.c
+CORE_SRCS += Src/scout/light.c
 CORE_SRCS += Src/battery/battery.c
 CORE_SRCS += Src/ui/helper.c
 CORE_SRCS += Src/ui/font.c

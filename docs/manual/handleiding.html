@@ -111,6 +111,7 @@
   <tr><td>Squelch</td><td>3</td></tr>
   <tr><td>Versterking</td><td>7 (van 0 tot 16)</td></tr>
   <tr><td>Peiltoon</td><td>uit</td></tr>
+  <tr><td>Verlichting</td><td>auto</td></tr>
   <tr><td>Zenden</td><td>vergrendeld</td></tr>
 </table>
 
@@ -135,8 +136,8 @@
   <tr><td>G:07</td><td><strong>Versterking</strong> van 00 (minst gevoelig) tot 16 (meest gevoelig). Wijzigen met ▲ en ▼.</td></tr>
   <tr><td>SQ3</td><td><strong>Squelch</strong>-stand 0–9. SQ0 betekent: squelch uit.</td></tr>
   <tr><td>- &nbsp;of&nbsp; T</td><td>Peiltoon uit (-) of aan (T).</td></tr>
-  <tr><td>RSSI 60 &nbsp;avg 60</td><td><strong>Signaalsterkte</strong>: het getal van nu en het gemiddelde. Zonder signaal staat er een laag getal (ruis); hoe hoger, hoe sterker.</td></tr>
-  <tr><td>Balk</td><td>De signaalsterkte als balk. Het losse streepje is de hoogste waarde van de laatste twee seconden.</td></tr>
+  <tr><td>RSSI 60 &nbsp;avg 60</td><td><strong>Signaalsterkte</strong>: het getal van nu en het gemiddelde over 0,3 seconde. Zonder signaal staat er een laag getal (ruis); hoe hoger, hoe sterker.</td></tr>
+  <tr><td>Balk</td><td>De signaalsterkte als balk, zonder middeling: de balk volgt het signaal meteen. Het losse streepje is de hoogste waarde van de laatste twee seconden.</td></tr>
 </table>
 
 <!-- ======================================================== 4 Bediening -->
@@ -202,7 +203,7 @@
 <h2><span class="num">5</span>Het menu</h2>
 <div class="two">
   <div class="grow">
-    <p>Druk kort op <span class="key">M</span>. Het menu heeft vijf onderdelen. Het gekozen onderdeel is zwart.</p>
+    <p>Druk kort op <span class="key">M</span>. Het menu heeft zes onderdelen. Het gekozen onderdeel is zwart.</p>
     <table>
       <tr><th>Toets</th><th>In het menu</th></tr>
       <tr><td><span class="key">▲</span> <span class="key">▼</span></td><td>Onderdeel kiezen.</td></tr>
@@ -264,6 +265,14 @@
   </figure>
 </div>
 
+<h3>Verlichting</h3>
+<p>De verlichting van het scherm. Wisselen met <span class="key">▲</span> of <span class="key">▼</span>.</p>
+<ul>
+  <li><strong>auto</strong>: elke toets (ook PTT en de zijtoetsen) zet de verlichting aan. 20 seconden na de laatste toets gaat ze uit. De toets doet daarbij gewoon wat hij altijd doet. Standaard.</li>
+  <li><strong>aan</strong>: altijd aan.</li>
+  <li><strong>uit</strong>: altijd uit; spaart de batterij.</li>
+</ul>
+
 <h3>Scanner</h3>
 <p>De scanner zoekt in de huidige band naar de vijf sterkste signalen: 144,0 – 146,0 MHz op 2&nbsp;m, 433,0 – 435,0 MHz op 70&nbsp;cm. Zoeken duurt een paar seconden.</p>
 <div class="screens">
@@ -304,7 +313,8 @@
   <div class="grow">
     <div class="note">
       <p>De peiltoon werkt ook als de squelch aan staat: hij reageert op de signaalsterkte, niet op het geluid.</p>
-      <p>De toon volgt elke verandering van het signaal meteen, zonder middeling. Daardoor kan hij wat trillen. De balk op het scherm toont het gemiddelde en is rustiger.</p>
+      <p>De toon en de balk volgen elke verandering van het signaal meteen, zonder middeling. Daardoor kunnen ze wat trillen. Het getal achter <em>avg</em> is het gemiddelde en is rustiger.</p>
+      <p>Met verlichting op <em>auto</em> gaat het scherm 20 seconden na de laatste toets donker. Wilt u de balk ook in het donker blijven zien, zet de verlichting dan op <em>aan</em>.</p>
     </div>
   </div>
 </div>
@@ -426,6 +436,7 @@
 </table>
 <p>Zet de meetzender op de frequentie van de porto en verhoog het niveau langzaam. Noteer bij welk niveau de squelch op <em>OPEN</em> springt, en wat RSSI, NOIS en GLIT dan aangeven. Met die getallen kan de squelch in een volgende versie worden bijgesteld. De squelch is gemaakt voor FM; werkt hij in AM niet goed, zet hem dan op ‘uit’.</p>
 <p>De regel <strong>RD/s</strong> toont hoe vaak per seconde de porto de RSSI leest, <strong>CHG</strong> hoe vaak die waarde veranderde. Met de peiltoon aan leest de porto zo vaak als de ontvangerchip toelaat; CHG laat dan zien hoe vaak de chip zelf een nieuwe meting geeft.</p>
+<p>De onderste regel toont hoe lang het hoofdscherm per beeld nodig heeft, in microseconden: <strong>DRW</strong> is het tekenen, <strong>BLT</strong> het versturen naar het display. Het is de langste tijd uit de laatste seconde dat het hoofdscherm open stond. In die tijd leest de porto geen RSSI. Meten: zet op het hoofdscherm de peiltoon aan, wacht een paar seconden en open dan Menu → Info → <span class="key">▼</span>.</p>
 
 <h3>Gevoeligheid meten</h3>
 <p>Met een meetzender kunt u controleren of een porto nog goed gevoelig is. Het RSSI-getal op het hoofdscherm is de ruwe meting van de BK4819: ongeveer 2 eenheden per dB. Vergelijk bij dezelfde frequentie, hetzelfde niveau en dezelfde versterking (G) de twee porto’s met elkaar.</p>

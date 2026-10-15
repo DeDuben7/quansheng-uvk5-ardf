@@ -5,7 +5,7 @@
 #ifndef SCOUT_VERSION_H
 #define SCOUT_VERSION_H
 
-#define SCOUT_VERSION "1.2"
+#define SCOUT_VERSION "1.3"
 
 /* Short git commit the firmware was built from ("8b8060a", "8b8060a-dirty"),
  * passed by the Makefile as -DSCOUT_GIT_HASH=\"...\". "dev" if unknown. */

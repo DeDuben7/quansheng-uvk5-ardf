@@ -3,6 +3,21 @@
 Newest first. `tools/release.ps1 -Publish` uses the `## X.Y` section of a
 release as its notes on GitHub.
 
+## 1.3
+
+- The bargraph (S-meter) on the home screen follows the signal strength
+  directly, like the DF tone, so it moves as fast as you turn the antenna.
+  The "avg" number next to RSSI still shows the 0.3 s average.
+- The screen updates 25 times per second instead of 10.
+- New menu item Verlichting (backlight): auto, aan (always on) or uit
+  (always off). Auto is the default: every key press, PTT included, lights
+  the screen, and it goes dark 20 s after the last press. Like the other
+  settings it resets at power-on.
+- The live squelch page in Info shows on its last line how long the home
+  screen takes per frame, in microseconds: drawing (DRW) and sending it to
+  the display (BLT). The radio does not read the signal strength during
+  that time.
+
 ## 1.2
 
 - The DF tone (peiltoon) follows the signal strength directly, without

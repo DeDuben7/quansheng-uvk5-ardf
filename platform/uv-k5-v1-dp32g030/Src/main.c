@@ -44,7 +44,7 @@ void Main(void)
     BK4819_Init();
 
     static const backlight_config_t bl_cfg = {
-        .timeout_500ms  = 0,   // always on for now
+        .timeout_500ms  = 0,   // never: core scout/light.c switches it
         .brightness_max = 10,
         .brightness_min = 0,
     };

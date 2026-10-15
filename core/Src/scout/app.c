@@ -3,7 +3,7 @@
  * Polls the keyboard with simple debounce, dispatches presses, runs
  * the squelch gate, feeds the audio-DF tone the raw RSSI (as fast as the
  * BK4819 bus allows while the tone is on), and re-renders the current
- * screen at ~10 Hz.
+ * screen at 25 Hz (SCOUT_FRAME_MS).
  *
  * Home screen keys: digits = frequency entry, UP/DOWN = gain, SIDE1 = DF
  * tone, MENU = settings menu (scout/menu.h: squelch, modulation, band,
@@ -21,6 +21,7 @@
 #include "scout/tx.h"
 #include "scout/info.h"
 #include "scout/gaincal.h"
+#include "scout/light.h"
 #include "scout/menu.h"
 #include "radio/radio.h"
 #include "audio_df/audio_df.h"
@@ -50,6 +51,11 @@ static void rssi_read(void)
     s_rate_reads++;
 }
 
+uint16_t scout_app_get_rssi_raw(void)
+{
+    return s_rssi_raw;
+}
+
 void scout_app_get_rssi_rate(uint16_t* reads_per_s, uint16_t* changes_per_s)
 {
     *reads_per_s   = s_reads_per_s;
@@ -57,9 +63,9 @@ void scout_app_get_rssi_rate(uint16_t* reads_per_s, uint16_t* changes_per_s)
 }
 
 // --- Smoothed RSSI ---------------------------------------------------------
-// 30-sample moving average at 100 Hz -> 300 ms window, for the display.
-// Bigger window = steadier display, at the cost of a small latency when
-// sweeping the antenna. The DF tone does not use it.
+// 30-sample moving average at 100 Hz -> 300 ms window, for the "avg"
+// number on the home screen. The DF tone and the bargraph do not use it:
+// they follow the raw reading.
 #define RSSI_AVG_LEN 30u
 static uint16_t s_rssi_buf[RSSI_AVG_LEN];
 static uint8_t  s_rssi_idx;
@@ -116,6 +122,7 @@ static key_event_t poll_key_event(KEY_Code_t* out_key)
         s_pressed_key = now;
         s_press_tick  = scout_tick_10ms();
         s_long_fired  = false;
+        light_activity();
     }
     else if (now == s_pressed_key && now != KEY_INVALID)
     {
@@ -223,6 +230,7 @@ void scout_app_run(void)
 {
     uint32_t last_render_tick = 0;
     uint32_t last_rate_tick = 0;
+    light_init();
     for (;;)
     {
         KEY_Code_t key = KEY_INVALID;
@@ -232,6 +240,11 @@ void scout_app_run(void)
         scout_tx_task(s_screen == SCREEN_HOME
                       && !scout_home_input_active()
                       && !scout_tx_pin_active());
+
+        // Backlight: PTT counts as a key press for as long as it is held.
+        if (scout_tx_ptt_held())
+            light_activity();
+        light_task();
 
         // Keys are ignored while on air.
         if (evt != EVT_NONE && !scout_tx_active())
@@ -316,8 +329,8 @@ void scout_app_run(void)
             s_rate_changes  = 0;
         }
 
-        // Re-render at ~10 Hz.
-        if ((now - last_render_tick) >= 10)
+        // Re-render once per frame (25 Hz).
+        if ((now - last_render_tick) >= SCOUT_FRAME_MS / 10u)
         {
             last_render_tick = now;
             if (s_screen == SCREEN_MENU)

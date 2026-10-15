@@ -8,6 +8,7 @@
 #include "calib/calib.h"
 #include "emu/emu.h"
 #include "peripherals/audio_path.h"
+#include "peripherals/backlight_hal.h"
 #include "peripherals/keyboard.h"
 #include "radio/tx_hw.h"
 
@@ -32,6 +33,11 @@ KEY_Code_t KEYBOARD_Poll(void)
 void AUDIO_AudioPathOn(void)  { s_audio_on = true; }
 void AUDIO_AudioPathOff(void) { s_audio_on = false; }
 bool emu_audio_path_on(void)  { return s_audio_on; }
+
+/* The real platforms switch the backlight on at boot, before the app. */
+static bool s_backlight_on = true;
+void backlight_hal_set(bool on) { s_backlight_on = on; }
+bool emu_backlight_on(void)     { return s_backlight_on; }
 
 bool TX_HW_PttPressed(void)
 {
